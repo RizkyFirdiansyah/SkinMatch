@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
+import '../../features/profile/presentation/skin_profile_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 
 // ── Route Paths ──────────────────────────────────────────────────────────────
@@ -40,8 +41,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // Profile Setup — standalone
       GoRoute(
         path: AppRoutes.profile,
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: Text('Halaman Profile Setup'))),
+        builder: (context, state) => const SkinProfileScreen(),
       ),
 
       // Main Shell — with Bottom Navigation Bar
@@ -88,4 +88,3 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ),
   );
 });
-
