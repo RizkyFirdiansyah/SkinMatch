@@ -8,6 +8,7 @@ import '../../features/profile/presentation/skin_profile_screen.dart';
 import '../../features/analysis/presentation/result_screen.dart';
 import '../../features/scanner/presentation/camera_screen.dart';
 import '../../shared/widgets/main_shell.dart';
+import '../../features/history/presentation/history_screen.dart';
 
 // ── Route Paths ──────────────────────────────────────────────────────────────
 abstract class AppRoutes {
@@ -59,8 +60,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: AppRoutes.history,
-            builder: (context, state) =>
-                const Scaffold(body: Center(child: Text('Halaman History'))),
+            pageBuilder: (context, state) =>
+                _fadeTransition(state, const HistoryScreen()),
           ),
         ],
       ),
