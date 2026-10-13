@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/profile/presentation/skin_profile_screen.dart';
+import '../../features/analysis/presentation/result_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 
 // ── Route Paths ──────────────────────────────────────────────────────────────
@@ -68,11 +69,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.analysis,
         builder: (context, state) {
-          final id = state.pathParameters['id'] ?? 'unknown';
-          return Scaffold(
-            appBar: AppBar(title: const Text('Kembali')),
-            body: Center(child: Text('Halaman Hasil Analisis\nID Scan: $id')),
-          );
+          final scanId = state.pathParameters['id'] ?? '';
+          return ResultScreen(scanId: scanId);
         },
       ),
     ],
