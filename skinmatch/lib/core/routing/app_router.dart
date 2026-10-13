@@ -6,6 +6,7 @@ import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/profile/presentation/skin_profile_screen.dart';
 import '../../features/analysis/presentation/result_screen.dart';
+import '../../features/scanner/presentation/camera_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 
 // ── Route Paths ──────────────────────────────────────────────────────────────
@@ -53,9 +54,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: AppRoutes.scan,
-            builder: (context, state) => const Scaffold(
-              body: Center(child: Text('Halaman Scan (Camera)')),
-            ),
+            pageBuilder: (context, state) =>
+                _fadeTransition(state, const CameraScreen()),
           ),
           GoRoute(
             path: AppRoutes.history,
@@ -68,9 +68,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // Analysis Result — full screen (no nav)
       GoRoute(
         path: AppRoutes.analysis,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final scanId = state.pathParameters['id'] ?? '';
-          return ResultScreen(scanId: scanId);
+          return _fadeTransition(state, ResultScreen(scanId: scanId));
         },
       ),
     ],
@@ -86,3 +86,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ),
   );
 });
+
+// ── Transition Helper ─────────────────────────────────────────────────────────
+CustomTransitionPage<void> _fadeTransition(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 220),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
+}
