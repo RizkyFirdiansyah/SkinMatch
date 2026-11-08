@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.api import auth, profile
+from app.api import auth, profile, scans
 
 app = FastAPI(
     title="SkinMatch API",
@@ -22,6 +22,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router)
 app.include_router(profile.router)
+app.include_router(scans.router)
 
 @app.get("/")
 def root():
