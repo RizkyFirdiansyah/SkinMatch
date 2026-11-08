@@ -11,9 +11,11 @@ import json
 
 router = APIRouter(prefix="/api/scans", tags=["Scans"])
 
+MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB
+
 @router.post("", response_model=ScanResponse, status_code=200)
 async def create_scan(
-    image: UploadFile = File(..., description="Product label image (max 1MB)"),
+    image: UploadFile = File(..., description="Product label image (max 2MB)"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -29,14 +31,14 @@ async def create_scan(
     6. Return result
     """
     
-    # 1. Validate file size (max 1MB)
+    # 1. Validate file size (max 2MB)
     contents = await image.read()
     file_size = len(contents)
     
-    if file_size > 1_000_000:  # 1MB
+    if file_size > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Ukuran file terlalu besar. Maksimal 1MB."
+            detail="Ukuran file terlalu besar. Maksimal 2MB."
         )
     
     # 2. Save image to disk
