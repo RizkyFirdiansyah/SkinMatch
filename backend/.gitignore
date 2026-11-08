@@ -22,3 +22,6 @@ uploads/
 # Database
 *.db
 *.sqlite
+
+# Logs
+*.log
