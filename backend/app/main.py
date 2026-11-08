@@ -1,5 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+from app.database import get_db
 
 app = FastAPI(
     title="SkinMatch API",
@@ -7,10 +10,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS - allow Flutter app
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Production: ganti dengan specific domain
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,5 +23,10 @@ def root():
     return {"message": "SkinMatch API is running", "version": "1.0.0"}
 
 @app.get("/health")
-def health_check():
-    return {"status": "healthy", "database": "not connected yet"}
+def health_check(db: Session = Depends(get_db)):
+    try:
+        # Test database connection
+        db.execute(text("SELECT 1"))
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "database": f"error: {str(e)}"}
