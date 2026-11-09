@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.api import auth, profile, scans
+from app.api import auth, profile, scans, search
 import os
 
 app = FastAPI(
@@ -32,6 +32,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(scans.router)
+app.include_router(search.router)
 
 @app.get("/")
 def root():

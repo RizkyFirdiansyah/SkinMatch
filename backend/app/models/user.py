@@ -24,3 +24,4 @@ class User(Base):
     
     # Relationships
     scans = relationship("Scan", back_populates="user")
+    reviews = relationship("Review", back_populates="user")
