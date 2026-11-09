@@ -1,15 +1,24 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.api import auth, profile, scans
+import os
 
 app = FastAPI(
     title="SkinMatch API",
     description="Backend API untuk analisis kecocokan kosmetik",
     version="1.0.0"
 )
+
+# Create uploads directory if not exists
+os.makedirs("uploads/scans", exist_ok=True)
+os.makedirs("uploads/profiles", exist_ok=True)
+
+# Mount static files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,

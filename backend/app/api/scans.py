@@ -13,6 +13,14 @@ router = APIRouter(prefix="/api/scans", tags=["Scans"])
 
 MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB
 
+# Allowed image types
+ALLOWED_IMAGE_TYPES = {
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp"
+}
+
 @router.post("", response_model=ScanResponse, status_code=200)
 async def create_scan(
     image: UploadFile = File(..., description="Product label image (max 2MB)"),
@@ -34,6 +42,13 @@ async def create_scan(
     # 1. Validate file size (max 2MB)
     contents = await image.read()
     file_size = len(contents)
+    
+    # Validate file type
+    if image.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Format file tidak didukung. Gunakan JPG, PNG, atau WEBP."
+        )
     
     if file_size > MAX_FILE_SIZE:
         raise HTTPException(
