@@ -7,7 +7,6 @@ from app.models.scan import Scan
 from app.schemas.scan import ScanResponse, ScanListResponse
 import os
 import uuid
-import json
 
 router = APIRouter(prefix="/api/scans", tags=["Scans"])
 
@@ -55,9 +54,17 @@ async def create_scan(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Ukuran file terlalu besar. Maksimal 2MB."
         )
-    
+
+    # Check if profile completed
+    if not current_user.profile_completed or not current_user.skin_type:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Silakan setup profil kulit Anda terlebih dahulu"
+        )
+
     # 2. Save image to disk
-    filename = f"{uuid.uuid4()}.jpg"
+    extension = "jpg" if image.content_type in {"image/jpeg", "image/jpg"} else image.content_type.split("/")[-1]
+    filename = f"{uuid.uuid4()}.{extension}"
     upload_dir = "uploads/scans"
     os.makedirs(upload_dir, exist_ok=True)
     filepath = os.path.join(upload_dir, filename)
@@ -74,13 +81,6 @@ async def create_scan(
         "success": True
     }
     
-    # Check if profile completed
-    if not current_user.profile_completed or not current_user.skin_type:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Silakan setup profil kulit Anda terlebih dahulu"
-        )
-    
     # 4. DUMMY ML Classification - Replace dengan Rizky's model di Week 7
     dummy_ml_result = {
         "result": "Cocok",
@@ -91,7 +91,22 @@ async def create_scan(
         "risky_ingredients": [],
         "warnings": []
     }
-    
+
+    ingredients_analysis = {
+        "safe": [
+            {"name": ing, "function": "Moisturizing", "risk_level": "safe"}
+            for ing in dummy_ml_result["safe_ingredients"]
+        ],
+        "risky": [],
+        "unknown": []
+    }
+    classification_details = {
+        "explanation": dummy_ml_result["explanation"],
+        "ingredients_analysis": ingredients_analysis,
+        "warnings": dummy_ml_result["warnings"],
+        "recommendations": "Produk ini aman digunakan untuk tipe kulit Anda"
+    }
+
     # 5. Save to database
     new_scan = Scan(
         user_id=current_user.id,
@@ -100,7 +115,8 @@ async def create_scan(
         ocr_confidence=dummy_ocr_result["confidence"],
         classification_result=dummy_ml_result["result"],
         classification_code=dummy_ml_result["result_code"],
-        confidence=dummy_ml_result["confidence"]
+        confidence=dummy_ml_result["confidence"],
+        classification_details=classification_details
     )
     
     db.add(new_scan)
@@ -125,16 +141,9 @@ async def create_scan(
                 "result_code": dummy_ml_result["result_code"],
                 "confidence": dummy_ml_result["confidence"],
                 "explanation": dummy_ml_result["explanation"],
-                "ingredients_analysis": {
-                    "safe": [
-                        {"name": ing, "function": "Moisturizing", "risk_level": "safe"}
-                        for ing in dummy_ml_result["safe_ingredients"]
-                    ],
-                    "risky": [],
-                    "unknown": []
-                },
+                "ingredients_analysis": ingredients_analysis,
                 "warnings": dummy_ml_result["warnings"],
-                "recommendations": "Produk ini aman digunakan untuk tipe kulit Anda"
+                "recommendations": classification_details["recommendations"]
             }
         }
     }
@@ -196,7 +205,9 @@ def get_scan_detail(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan tidak ditemukan"
         )
-    
+
+    classification_details = scan.classification_details or {}
+
     return {
         "status": "success",
         "data": {
@@ -210,7 +221,9 @@ def get_scan_detail(
             },
             "classification": {
                 "result": scan.classification_result,
-                "confidence": scan.confidence
+                "result_code": scan.classification_code,
+                "confidence": scan.confidence,
+                **classification_details
             }
         }
     }

@@ -21,7 +21,6 @@ class SkinTypeCard extends StatelessWidget {
   static const _icons = {
     BiologicalSkinType.normal: LucideIcons.droplets,
     BiologicalSkinType.dry: LucideIcons.cloud_off,
-    BiologicalSkinType.combination: LucideIcons.git_branch,
     BiologicalSkinType.oily: LucideIcons.droplet,
     BiologicalSkinType.sensitive: LucideIcons.triangle_alert,
   };

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../core/utils/validators.dart';
 import '../theme/auth_style.dart';
@@ -8,14 +10,14 @@ import 'auth_primary_button.dart';
 import 'auth_text_field.dart';
 
 /// Isi tab "Masuk".
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -31,16 +33,29 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future<void> _submit() async {
-    // Periksa isian dulu. Kalau ada yang salah, berhenti di sini.
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    // Nanti: ganti dengan panggilan API login ke server.
-    await Future.delayed(const Duration(milliseconds: 900));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
+    try {
+      final user = await ref.read(apiClientProvider).login(
+        email: _idController.text.trim(),
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      context.go(
+        user['profile_completed'] == true ? AppRoutes.scan : AppRoutes.profile,
+      );
+    } on ApiException catch (error) {
+      if (mounted) _showError(error.message);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
-    context.go(AppRoutes.scan); // masuk ke aplikasi utama
+  void _showError(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -50,13 +65,13 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           AuthTextField(
-            label: 'Email / No. Handphone *',
-            hint: 'nama@email.com atau 08123456789',
+            label: 'Email *',
+            hint: 'nama@email.com',
             icon: Icons.mail_outline,
             controller: _idController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            validator: Validators.emailOrPhone,
+            validator: Validators.email,
           ),
           const SizedBox(height: 16),
           AuthTextField(
