@@ -20,6 +20,8 @@ def get_profile(current_user: User = Depends(get_current_user)):
             "name": current_user.name,
             "email": current_user.email,
             "skin_type": current_user.skin_type.value if current_user.skin_type else None,
+            "age_range": current_user.age_range,
+            "biological_sex": current_user.biological_sex,
             "profile_completed": current_user.profile_completed
         }
     }
@@ -47,6 +49,10 @@ def update_profile(
     
     # Update user
     current_user.skin_type = SkinTypeEnum(request.skin_type)
+    if request.age_range is not None:
+        current_user.age_range = request.age_range
+    if request.biological_sex is not None:
+        current_user.biological_sex = request.biological_sex
     current_user.profile_completed = True
     
     db.commit()
@@ -60,6 +66,8 @@ def update_profile(
             "name": current_user.name,
             "email": current_user.email,
             "skin_type": current_user.skin_type.value,
+            "age_range": current_user.age_range,
+            "biological_sex": current_user.biological_sex,
             "profile_completed": current_user.profile_completed
         }
     }

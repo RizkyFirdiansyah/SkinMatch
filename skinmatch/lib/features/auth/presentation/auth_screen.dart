@@ -84,7 +84,6 @@ class _AuthScreenState extends State<AuthScreen> {
                               ? const LoginForm(key: ValueKey('login'))
                               : RegisterForm(
                                   key: const ValueKey('register'),
-                                  onRegistered: () => _switchMode(true),
                                 ),
                           const SizedBox(height: 18),
                           _buildSwitchButton(),

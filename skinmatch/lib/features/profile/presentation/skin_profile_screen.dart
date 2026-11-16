@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../shared/models/skinmatch_models.dart';
 import '../../../shared/widgets/shared_widgets.dart';
@@ -24,6 +25,40 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
   BiologicalSex _selectedSex = BiologicalSex.female;
   BiologicalSkinType? _selectedSkinType;
   bool _isLoading = false;
+  bool _isLoadingProfile = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    try {
+      final profile = await ref.read(apiClientProvider).getProfile();
+      if (!mounted) return;
+      final age = AgeRange.values.where((value) => value.label == profile['age_range']);
+      final sex = BiologicalSex.values.where((value) => value.code == profile['biological_sex']);
+      final skinType = BiologicalSkinType.values.where(
+        (value) => value.label == profile['skin_type'],
+      );
+      setState(() {
+        _nameController.text = profile['name']?.toString() ?? '';
+        if (age.isNotEmpty) _selectedAge = age.first;
+        if (sex.isNotEmpty) _selectedSex = sex.first;
+        if (skinType.isNotEmpty) _selectedSkinType = skinType.first;
+      });
+    } on ApiException catch (error) {
+      if (!mounted) return;
+      if (error.statusCode == 401) {
+        context.go(AppRoutes.auth);
+      } else {
+        _showError(error.message);
+      }
+    } finally {
+      if (mounted) setState(() => _isLoadingProfile = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -31,7 +66,7 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
     super.dispose();
   }
 
-  void _onSave() async {
+  Future<void> _onSave() async {
     if (_selectedSkinType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Pilih tipe kulit terlebih dahulu')),
@@ -39,10 +74,24 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
       return;
     }
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-    context.go(AppRoutes.scan);
+    try {
+      await ref.read(apiClientProvider).updateProfile(
+        skinType: _selectedSkinType!.label,
+        ageRange: _selectedAge.label,
+        biologicalSex: _selectedSex.code,
+      );
+      if (mounted) context.go(AppRoutes.scan);
+    } on ApiException catch (error) {
+      if (mounted) _showError(error.message);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -64,7 +113,7 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ── Avatar & User ID ───────────────────────────────────────
-                _ProfileHeader(),
+                _ProfileHeader(name: _nameController.text),
                 const SizedBox(height: 28),
 
                 // ── Demografi Klinis ───────────────────────────────────────
@@ -74,6 +123,7 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
                 // Nama Lengkap
                 TextField(
                   controller: _nameController,
+                  readOnly: true,
                   style: AppTypography.bodyMedium
                       .copyWith(color: AppColors.textPrimary),
                   decoration: InputDecoration(
@@ -149,8 +199,8 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
               ),
               child: PrimaryButton(
                 label: 'Simpan & Terapkan',
-                onPressed: _onSave,
-                isLoading: _isLoading,
+                onPressed: _isLoadingProfile ? null : _onSave,
+                isLoading: _isLoading || _isLoadingProfile,
                 icon: LucideIcons.sparkles,
               ),
             ),
@@ -164,6 +214,10 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
 // ── Sub-Widgets ───────────────────────────────────────────────────────────────
 
 class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.name});
+
+  final String name;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -203,7 +257,7 @@ class _ProfileHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Pengguna Baru',
+              name.isEmpty ? 'Profil Pengguna' : name,
               style: AppTypography.headingSmall
                   .copyWith(color: AppColors.textPrimary),
             ),

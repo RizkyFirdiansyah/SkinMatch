@@ -6,7 +6,6 @@
 enum BiologicalSkinType {
   normal('NORMAL', 'Normal', 'Sebum Seimbang, hidrasi optimum 70–85%'),
   dry('DRY', 'Kering', 'Defisit lipid, rentan bersisik & kencang'),
-  combination('COMBINATION', 'Kombinasi', 'Berminyak di dahi/hidung/dagu, pipi kering'),
   oily('OILY', 'Berminyak', 'Hiper-sebum, kilap dalam 2 jam, pori besar'),
   sensitive('SENSITIVE', 'Sensitif', 'Epidermis tipis, mudah memerah & perih');
 
@@ -36,18 +35,38 @@ enum BiologicalSex {
 }
 
 class SkinCondition {
-  const SkinCondition({required this.id, required this.name, required this.label});
+  const SkinCondition({
+    required this.id,
+    required this.name,
+    required this.label,
+  });
   final String id;
   final String name;
   final String label;
 
   static const List<SkinCondition> predefined = [
-    SkinCondition(id: 'barrier_damaged', name: 'barrier_damaged', label: 'Barrier Rusak'),
-    SkinCondition(id: 'acne_prone', name: 'acne_prone', label: 'Rentan Jerawat'),
+    SkinCondition(
+      id: 'barrier_damaged',
+      name: 'barrier_damaged',
+      label: 'Barrier Rusak',
+    ),
+    SkinCondition(
+      id: 'acne_prone',
+      name: 'acne_prone',
+      label: 'Rentan Jerawat',
+    ),
     SkinCondition(id: 'eczema', name: 'eczema', label: 'Eksim'),
     SkinCondition(id: 'rosacea', name: 'rosacea', label: 'Rosacea'),
-    SkinCondition(id: 'hyperpigmentation', name: 'hyperpigmentation', label: 'Hiperpigmentasi'),
-    SkinCondition(id: 'rough_texture', name: 'rough_texture', label: 'Tekstur Kasar'),
+    SkinCondition(
+      id: 'hyperpigmentation',
+      name: 'hyperpigmentation',
+      label: 'Hiperpigmentasi',
+    ),
+    SkinCondition(
+      id: 'rough_texture',
+      name: 'rough_texture',
+      label: 'Tekstur Kasar',
+    ),
   ];
 }
 
@@ -102,7 +121,8 @@ class UserProfile {
       biologicalSex: biologicalSex ?? this.biologicalSex,
       skinType: skinType ?? this.skinType,
       conditions: conditions ?? this.conditions,
-      blacklistedIngredients: blacklistedIngredients ?? this.blacklistedIngredients,
+      blacklistedIngredients:
+          blacklistedIngredients ?? this.blacklistedIngredients,
       avatarUrl: avatarUrl ?? this.avatarUrl,
     );
   }
@@ -114,7 +134,8 @@ enum IngredientSafetyCategory {
   hero('HERO'),
   safeCarrier('SAFE_CARRIER'),
   warning('WARNING'),
-  irritant('IRRITANT');
+  irritant('IRRITANT'),
+  unknown('UNKNOWN');
 
   const IngredientSafetyCategory(this.code);
   final String code;
@@ -139,7 +160,7 @@ class IngredientItem {
   final String? concentration;
   final IngredientSafetyCategory category;
   final int comedogenicRating; // 0–5
-  final int irritancyRating;  // 0–3
+  final int irritancyRating; // 0–3
   final String functionDescription;
   final String? warningNote;
 }

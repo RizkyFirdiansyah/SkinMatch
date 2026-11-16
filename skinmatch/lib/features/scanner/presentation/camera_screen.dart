@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../widgets/camera_overlay_painter.dart';
 
@@ -20,6 +23,9 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
     with SingleTickerProviderStateMixin {
   bool _flashOn = false;
   bool _isScanning = false;
+  final _imagePicker = ImagePicker();
+  XFile? _selectedImage;
+  Uint8List? _imageBytes;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
@@ -41,14 +47,53 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
     super.dispose();
   }
 
-  void _onScan() async {
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final image = await _imagePicker.pickImage(
+        source: source,
+        imageQuality: 85,
+      );
+      if (image == null || !mounted) return;
+      final bytes = await image.readAsBytes();
+      setState(() {
+        _selectedImage = image;
+        _imageBytes = bytes;
+      });
+    } on PlatformException catch (error) {
+      _showError('Gambar tidak dapat dibuka: $error');
+    }
+  }
+
+  Future<void> _onScan() async {
+    if (_isScanning) return;
+    var image = _selectedImage;
+    if (image == null) {
+      await _pickImage(ImageSource.camera);
+      image = _selectedImage;
+    }
+    if (image == null || !mounted) return;
+
     setState(() => _isScanning = true);
-    // Simulasi OCR processing (< 5 detik)
-    await Future.delayed(const Duration(milliseconds: 2500));
+    try {
+      final result = await ref.read(apiClientProvider).uploadScan(image);
+      final scanId = result['scan_id']?.toString();
+      if (scanId == null || scanId.isEmpty) {
+        throw const ApiException('Server tidak mengembalikan ID hasil pindai.');
+      }
+      ref.invalidate(scanHistoryProvider);
+      if (mounted) context.push(AppRoutes.analysisPath(scanId));
+    } on ApiException catch (error) {
+      if (mounted) _showError(error.message);
+    } finally {
+      if (mounted) setState(() => _isScanning = false);
+    }
+  }
+
+  void _showError(String message) {
     if (!mounted) return;
-    setState(() => _isScanning = false);
-    // Navigate ke result dengan dummy scan ID
-    context.push(AppRoutes.analysisPath('demo-scan-001'));
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -61,15 +106,18 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
         fit: StackFit.expand,
         children: [
           // ── Simulated Camera Viewfinder ──────────────────────────────────
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF0A1A10), Color(0xFF1F382B)],
+          if (_imageBytes != null)
+            Image.memory(_imageBytes!, fit: BoxFit.cover)
+          else
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFF0A1A10), Color(0xFF1F382B)],
+                ),
               ),
             ),
-          ),
 
           // ── Overlay Frame Painter ────────────────────────────────────────
           CustomPaint(
@@ -238,7 +286,9 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
                     _BottomActionButton(
                       icon: LucideIcons.image,
                       label: 'Galeri',
-                      onTap: () {},
+                      onTap: _isScanning
+                          ? () {}
+                          : () => _pickImage(ImageSource.gallery),
                     ),
 
                     // ── Center Scan Button  ──
