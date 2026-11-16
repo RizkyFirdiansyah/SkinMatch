@@ -6,7 +6,10 @@ plugins {
 
 android {
     namespace = "com.skinmatch.skinmatch"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler_android (14.1.1) mensyaratkan compileSdk 37, sedangkan
+    // bawaan Flutter 3.50 masih 36. compileSdk aman dinaikkan sendirian karena
+    // tidak mengubah perilaku runtime seperti targetSdk.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
