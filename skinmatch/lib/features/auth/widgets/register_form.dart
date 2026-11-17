@@ -61,7 +61,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
         password: _passwordController.text,
         confirmPassword: _confirmController.text,
       );
-      if (mounted) context.go(AppRoutes.profile);
+      if (mounted) context.go(AppRoutes.profileSetup);
     } on ApiException catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context)

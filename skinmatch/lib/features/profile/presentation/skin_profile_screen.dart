@@ -10,10 +10,11 @@ import '../../../shared/models/skinmatch_models.dart';
 import '../../../shared/widgets/shared_widgets.dart';
 import '../widgets/skin_type_card.dart';
 
-/// /profile — Onboarding & Formulir Tipe Kulit
-/// Sesuai PRD Section 2B: Profile header, demografi, skin type radio cards
+/// Pengaturan profil kulit dan formulir onboarding pengguna baru.
 class SkinProfileScreen extends ConsumerStatefulWidget {
-  const SkinProfileScreen({super.key});
+  const SkinProfileScreen({super.key, this.isSetup = false});
+
+  final bool isSetup;
 
   @override
   ConsumerState<SkinProfileScreen> createState() => _SkinProfileScreenState();
@@ -80,7 +81,7 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
         ageRange: _selectedAge.label,
         biologicalSex: _selectedSex.code,
       );
-      if (mounted) context.go(AppRoutes.scan);
+      if (mounted) context.go(AppRoutes.home);
     } on ApiException catch (error) {
       if (mounted) _showError(error.message);
     } finally {
@@ -100,10 +101,12 @@ class _SkinProfileScreenState extends ConsumerState<SkinProfileScreen> {
       backgroundColor: AppColors.backgroundSoft,
       appBar: SkinMatchAppBar(
         title: 'Profil Kulit',
-        leading: IconButton(
-          icon: const Icon(LucideIcons.arrow_left),
-          onPressed: () => context.go(AppRoutes.auth),
-        ),
+        leading: widget.isSetup
+            ? IconButton(
+                icon: const Icon(LucideIcons.arrow_left),
+                onPressed: () => context.go(AppRoutes.auth),
+              )
+            : null,
       ),
       body: Stack(
         children: [
