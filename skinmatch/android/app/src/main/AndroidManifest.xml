@@ -1,4 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Kamera untuk memindai label komposisi produk -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Kamera bersifat opsional agar aplikasi tetap bisa dipasang di perangkat
+         tanpa kamera (pengguna masih bisa memilih gambar dari galeri). -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="skinmatch"

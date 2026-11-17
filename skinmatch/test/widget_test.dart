@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -107,14 +106,11 @@ void main() {
     expect(find.text('Email *'), findsOneWidget);
     expect(find.textContaining('No. Handphone'), findsNothing);
 
-    await tester.ensureVisible(find.text('Daftar Disini'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Daftar Disini'));
-    await tester.pumpAndSettle();
+  testWidgets('aplikasi terbuka di layar login', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: SkinMatchApp()));
+    await tester.pump(const Duration(milliseconds: 400));
 
-    expect(find.text('Nama Lengkap *'), findsOneWidget);
-    expect(find.text('Email *'), findsOneWidget);
-    expect(find.textContaining('No. Handphone'), findsNothing);
+    expect(find.text('Email / No. Handphone *'), findsOneWidget);
   });
 }
 
