@@ -1,0 +1,26 @@
+{
+  "trained_at": "2026-11-13T10:56:21+00:00",
+  "model_kind": "svc_cal",
+  "class_weight": "balanced",
+  "labels": [
+    "Berminyak_Berjerawat",
+    "Kering",
+    "Sensitif",
+    "Normal"
+  ],
+  "thresholds": {
+    "Berminyak_Berjerawat": 0.5,
+    "Kering": 0.5,
+    "Sensitif": 0.5,
+    "Normal": 0.5
+  },
+  "n_samples": 17750,
+  "sklearn_version": "1.9.1",
+  "data_file": "data/processed/trainset_face.csv",
+  "holdout_metrics": {
+    "macro_f1": 0.971,
+    "subset_accuracy": 0.875,
+    "hamming_loss": 0.036
+  },
+  "note": "macro-F1 tinggi sebagian besar mereproduksi aturan pelabelan; bukan validasi klinis."
+}
