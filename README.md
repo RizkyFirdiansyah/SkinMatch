@@ -72,7 +72,11 @@ Pengguna menyimpan dan memperbarui tipe kulit (normal, kering, berminyak, sensit
 
 ### 3. Pemindai Komposisi (Scan / OCR)
 
+- Menampilkan preview kamera langsung di dalam kartu pemindai, lengkap dengan panduan bingkai 4:3
 - Mengambil foto label langsung dari kamera atau memilih gambar dari galeri
+- Tombol flash/torch untuk kondisi minim cahaya
+- Mengompresi gambar secara lokal (sisi pendek 1440 px, maksimal 2 MB) sebelum diunggah
+- Menangani izin kamera: ditolak sementara, ditolak permanen (arahkan ke Pengaturan), dan kamera tidak tersedia
 - Mengunggah gambar ke server melalui REST API
 - Mengekstrak teks daftar bahan dengan OCR di sisi backend
 - Menampilkan pesan "ulangi foto" bila gambar terlalu buram atau bukan label komposisi
@@ -96,14 +100,14 @@ Pengguna dapat memberi review pada tiap entri riwayat berupa pilihan **Cocok / T
 
 ### Status Pengembangan
 
-| Fitur                           | Status  |
-| ------------------------------- | ------- |
-| Autentikasi (Login)             | _(isi)_ |
-| Manajemen Profil Kulit          | _(isi)_ |
-| Pemindai Komposisi (Scan / OCR) | _(isi)_ |
-| Klasifikasi Kecocokan Bahan     | _(isi)_ |
-| Riwayat Analisis                | _(isi)_ |
-| Review Riwayat                  | _(isi)_ |
+| Fitur                           | Status                                                              |
+| ------------------------------- | ------------------------------------------------------------------- |
+| Autentikasi (Login)             | _(isi)_                                                             |
+| Manajemen Profil Kulit          | _(isi)_                                                             |
+| Pemindai Komposisi (Scan / OCR) | Preview + capture + galeri selesai; unggah ke API belum terhubung   |
+| Klasifikasi Kecocokan Bahan     | _(isi)_                                                             |
+| Riwayat Analisis                | _(isi)_                                                             |
+| Review Riwayat                  | _(isi)_                                                             |
 
 ---
 
@@ -370,6 +374,68 @@ Total **38 test case** dari **25 test scenario**. Prioritas: Critical 4, High 19
 | FR-06  | Review Riwayat        | Medium    | TC-REV-001 s.d. 006   | 6         | Belum dieksekusi |
 | NFR-01 | Kinerja               | High      | TC-PERF-001 s.d. 002  | 2         | Belum dieksekusi |
 
+### Pengujian Otomatis (Flutter)
+
+Pemindai kamera diuji tanpa perangkat fisik karena kamera, galeri, kompresor, dan layanan analisis diabstraksikan menjadi gateway yang dapat difake.
+
+```bash
+cd skinmatch
+flutter pub get
+flutter analyze
+flutter test
+```
+
+| Berkas uji                                              | Cakupan yang diuji                                                                                                                  |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `test/features/scanner/scanner_controller_test.dart`    | Inisialisasi kamera, izin ditolak/permanen, torch, capture ganda, galeri batal, kegagalan kompresi, lifecycle, resume setelah izin, resume tanpa loop saat izin tetap ditolak |
+| `test/features/scanner/camera_gateway_test.dart`        | Pemetaan status izin (`denied`, `permanentlyDenied`, `restricted`) menjadi `ScannerFailure`                                          |
+| `test/features/scanner/image_compressor_test.dart`      | Batas 2 MB, penurunan kualitas bertahap, file sumber hilang, error encoder                                                          |
+| `test/features/scanner/camera_screen_test.dart`         | Kartu izin, preview, capture ke halaman hasil, galeri, kegagalan torch, layout layar kecil 320x568                                  |
+| `test/widget_test.dart`                                 | Smoke test: aplikasi terbuka di layar login                                                                                        |
+
+Catatan: plugin asli (`camera`, `image_picker`, `flutter_image_compress`) tidak dipanggil pada test otomatis; semuanya diganti fake di `test/helpers/scanner_fakes.dart`. Perilaku plugin asli diverifikasi manual pada perangkat.
+
+`flutter analyze` saat ini menyisakan 28 `info` berupa `deprecated_member_use` yang sudah ada sebelum fitur pemindai: 27 berkas memakai `package:flutter/material.dart` (Flutter 3.50 mengarahkan ke `package:material_ui/material_ui.dart`) dan 1 pemakaian `withOpacity` di `history_screen.dart`. Semuanya bukan error; migrasi ke `material_ui` dikerjakan terpisah karena menyentuh seluruh berkas UI.
+
+### Matriks Pengujian Manual Pemindai Kamera
+
+Dijalankan pada **perangkat Android fisik** (emulator hanya untuk smoke test UI) karena preview kamera dan torch membutuhkan hardware.
+
+| ID          | Langkah                                                                                                                                  | Hasil yang Diharapkan                                                                                                                                                                    |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TC-OCR-001  | Buka tab Pindai → izinkan kamera → arahkan ke label L-01 → tekan **Pindai INCI**                                                          | Preview tajam (tidak stretch); muncul status "Mengambil foto" → "Mengoptimalkan gambar" → "Menganalisis INCI List"; setelah selesai berpindah ke layar hasil tanpa crash                  |
+| TC-OCR-002  | Buka tab Pindai → tekan **Galeri** → pilih gambar L-01                                                                                    | Alur kompresi dan analisis sama seperti kamera; sumber gambar tercatat sebagai galeri; berpindah ke layar hasil                                                                          |
+| TC-OCR-007  | Cabut izin kamera lewat Pengaturan Android → buka aplikasi                                                                                | Kartu "Izin kamera diperlukan" tampil dengan tombol **Coba Lagi** dan **Galeri**; galeri tetap berfungsi; tidak crash                                                                    |
+| TC-OCR-007a | Tolak izin permanen ("Jangan tanya lagi") → buka aplikasi                                                                                 | Kartu "Izin kamera ditolak" tampil dengan tombol **Buka Pengaturan**; setelah izin diaktifkan dan kembali ke aplikasi, kamera terbuka otomatis                                             |
+| TC-OCR-007b | Tekan **Coba Lagi** setelah menolak izin sekali                                                                                           | Dialog izin muncul kembali; bila diizinkan, preview tampil; bila ditolak, kartu izin tetap tampil                                                                                        |
+| SCAN-M-01   | Nyalakan dan matikan tombol flash pada preview                                                                                            | Ikon berubah aktif/nonaktif dan torch menyala/mati; bila perangkat tidak mendukung, muncul SnackBar "Flash tidak tersedia di perangkat ini." tanpa crash                                |
+| SCAN-M-02   | Tekan tombol **Pindai INCI** dua kali cepat                                                                                               | Hanya satu foto yang diambil dan satu proses analisis berjalan                                                                                                                            |
+| SCAN-M-03   | Tekan tombol Home saat preview aktif, lalu kembali ke aplikasi                                                                             | Kamera dilepas saat background dan preview hidup kembali tanpa crash                                                                                                                     |
+| SCAN-M-04   | Selesaikan pemindaian hingga layar hasil, lalu tekan kembali                                                                               | Kembali ke layar pemindai dan kamera aktif lagi                                                                                                                                          |
+| SCAN-M-05   | Periksa ukuran file hasil kompresi (adb/log atau simpan sementara)                                                                         | File ≤ 2 MB dan sisi pendek ±1440 px; bila tetap > 2 MB setelah kualitas terendah, muncul pesan "Ukuran gambar terlalu besar. Silakan ambil ulang foto."                                 |
+| SCAN-M-06   | Putar perangkat saat preview aktif                                                                                                         | Aplikasi tetap portrait dan preview tidak terpotong/teregang                                                                                                                              |
+
+> Status integrasi: unggah ke `POST /api/scans` belum aktif. Sampai integrasi selesai, langkah analisis memakai `DummyAnalysisService` sehingga verifikasi HTTP 200 dan isi OCR pada TC-OCR-001/002 baru dapat dilakukan setelah API terhubung.
+
+#### Hasil Eksekusi di Perangkat (16 November 2026)
+
+Perangkat: Infinix X6833B, Android 14 (API 34), layar 1080x2460, build debug.
+
+| ID          | Status | Catatan                                                                                                    |
+| ----------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| TC-OCR-001  | PASS   | Preview tajam tanpa stretch; status berjalan sampai layar hasil. Isi OCR menunggu integrasi API.           |
+| TC-OCR-002  | PASS   | Galeri → kompresi → analisis → layar hasil.                                                                |
+| TC-OCR-007  | PASS   | Kartu "Izin kamera diperlukan" + **Coba Lagi**/**Galeri**; tombol tidak lagi macet.                        |
+| TC-OCR-007a | PASS   | **Buka Pengaturan** membuka halaman izin; setelah izin diaktifkan dan kembali, kamera terbuka otomatis.    |
+| TC-OCR-007b | PASS   | **Coba Lagi** memunculkan dialog izin lagi; setelah diizinkan preview tampil.                              |
+| SCAN-M-01   | PASS   | Logcat: `TorchControl#setTorchAsync: torch mode = TorchMode(value=1)`; ikon aktif dan cahaya terlihat.      |
+| SCAN-M-02   | PASS   | Tiga tap cepat hanya menghasilkan satu `takePictureInternal`.                                              |
+| SCAN-M-03   | PASS   | Logcat: `Camera2CameraController(CameraGraph-7) is closed` saat background; preview hidup lagi saat resume. |
+| SCAN-M-04   | PASS   | Back dari layar hasil kembali ke pemindai dengan kamera aktif.                                             |
+| SCAN-M-05   | PASS   | Berkas hasil kompresi di cache: 662 KB (batas 2 MB).                                                       |
+| SCAN-M-06   | PASS   | Orientasi dikunci portrait di `main.dart`; rotasi device tidak mengubah layout.                            |
+
+
 ### Kriteria Masuk dan Keluar
 
 **Entry criteria**
@@ -426,6 +492,28 @@ flutter run -d <id-perangkat>
 ```
 
 Jika terdapat kendala pada lingkungan pengembangan, jalankan `flutter doctor` untuk memeriksa konfigurasi.
+
+#### Versi Toolchain Android
+
+Proyek memakai Flutter 3.50 (Dart 3.14), yang menaikkan versi minimum toolchain Android. Versi yang dipakai sekarang:
+
+| Komponen                 | Versi    | Berkas                                        |
+| ------------------------ | -------- | --------------------------------------------- |
+| Gradle                   | 9.5.0    | `android/gradle/wrapper/gradle-wrapper.properties` |
+| Android Gradle Plugin    | 9.3.1    | `android/settings.gradle.kts`                 |
+| Kotlin Gradle Plugin     | 2.4.20   | `android/settings.gradle.kts`                 |
+| NDK                      | 28.2.13676358 | dipasang otomatis oleh plugin Flutter    |
+
+Flutter 3.50 menolak build bila AGP < 9.1.1 atau Kotlin < 2.4.10, dan memberi peringatan bila Gradle < 9.5.0. NDK tetap dibutuhkan meski proyek tidak punya kode native, karena AGP memakainya untuk *strip debug symbol* pada `libflutter.so`; plugin Flutter memicunya lewat `CMakeLists.txt` kosong. Pemasangan NDK (~700 MB) dilakukan sekali saat build pertama.
+
+#### Catatan Pemindai Kamera
+
+- Dependency yang dipakai: `camera`, `image_picker`, `flutter_image_compress`, `permission_handler`, dan `path_provider`.
+- Izin Android yang dibutuhkan: `android.permission.CAMERA` (sudah ditambahkan di `android/app/src/main/AndroidManifest.xml`). Kamera ditandai opsional agar aplikasi tetap bisa dipasang di perangkat tanpa kamera.
+- Plugin `camera` membutuhkan Android API 24+ dan minimal Flutter 3.35 (proyek memakai `minSdk` bawaan Flutter 3.38, yaitu 24).
+- Preview kamera dan torch tidak dapat diuji di emulator tanpa dukungan kamera virtual; gunakan perangkat fisik.
+- Setelah mengubah izin atau melakukan *hot reload*, kamera kadang masih memegang resource lama. Lakukan **hot restart** (tombol restart di IDE) atau jalankan ulang aplikasi.
+- Kompresi memakai `flutter_image_compress` dengan sisi pendek 1440 px dan batas berkas 2 MB, sesuai kontrak `POST /api/scans`.
 
 ### Menjalankan pada Perangkat Fisik
 
