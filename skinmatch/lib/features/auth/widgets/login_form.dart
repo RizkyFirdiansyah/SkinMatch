@@ -43,7 +43,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       );
       if (!mounted) return;
       context.go(
-        user['profile_completed'] == true ? AppRoutes.scan : AppRoutes.profile,
+        user['profile_completed'] == true
+            ? AppRoutes.home
+            : AppRoutes.profileSetup,
       );
     } on ApiException catch (error) {
       if (mounted) _showError(error.message);
