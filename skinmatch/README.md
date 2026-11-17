@@ -1,17 +1,26 @@
-# skinmatch
+# SkinMatch Flutter App
 
-A new Flutter project.
+## Run with the backend
 
-## Getting Started
+Start the backend from `backend/` after applying database migrations:
 
-This project is a starting point for a Flutter application.
+```powershell
+alembic upgrade head
+uvicorn app.main:app --reload --host 0.0.0.0
+```
 
-A few resources to get you started if this is your first Flutter project:
+Then run the app from `skinmatch/`:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```powershell
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app uses `http://10.0.2.2:8000` by default on the Android emulator and
+`http://localhost:8000` on web and other platforms. Override the API address
+with `--dart-define=API_BASE_URL=http://<backend-host>:8000`; use the computer's
+LAN address when connecting a physical device. The backend must be reachable
+from the device. Use HTTPS rather than cleartext HTTP for production.
+
+The app uses the backend for registration, login, profile retrieval and updates,
+image scans, scan details, and scan history. Uploaded images must be JPG, PNG,
+or WEBP and no larger than 2 MB.

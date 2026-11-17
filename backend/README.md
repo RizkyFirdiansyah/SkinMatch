@@ -57,6 +57,7 @@ python
 ### 5. Run Server
 
 ```bash
+alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
@@ -70,7 +71,7 @@ Buka http://localhost:8000/docs untuk Swagger UI.
 
 ### Profile
 - `GET /api/profile` - Get user profile (require auth)
-- `PUT /api/profile` - Update skin type (require auth)
+- `PUT /api/profile` - Update skin type and optional demographic data (require auth)
 
 ### Scans
 - `POST /api/scans` - Upload & analyze product image (require auth)
@@ -141,6 +142,16 @@ curl -X POST http://localhost:8000/api/scans \
 ## Nilai `skin_type`
 
 `Normal`, `Kering`, `Berminyak`, `Sensitif`
+
+`PUT /api/profile` also accepts optional `age_range` (`18-24`, `25-34`, `35-44`, or `45+`) and `biological_sex` (`FEMALE` or `MALE`):
+
+```json
+{
+  "skin_type": "Normal",
+  "age_range": "25-34",
+  "biological_sex": "FEMALE"
+}
+```
 
 ## Test Account
 

@@ -18,6 +18,8 @@ class User(Base):
     email = Column(String(100), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     skin_type = Column(Enum(SkinTypeEnum), nullable=True)
+    age_range = Column(String(10), nullable=True)
+    biological_sex = Column(String(10), nullable=True)
     profile_completed = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

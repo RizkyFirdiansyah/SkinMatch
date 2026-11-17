@@ -11,6 +11,7 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="skinmatch"
         android:name="${applicationName}"

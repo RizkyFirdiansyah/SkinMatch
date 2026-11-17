@@ -2,104 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
+
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../shared/models/skinmatch_models.dart';
 import '../widgets/circular_score.dart';
 import '../widgets/ingredient_status_card.dart';
-
-// ── Mock Data Provider ────────────────────────────────────────────────────────
-final scanResultProvider =
-    Provider.family<ScanAnalysisResult, String>((ref, scanId) {
-  return _mockResult;
-});
-
-final _mockResult = ScanAnalysisResult(
-  scanId: 'demo-scan-001',
-  userId: 'user-001',
-  timestamp: 'Hari ini, 10:45',
-  brand: 'PURE BOTANICA',
-  productName: 'Hydra-Calm Barrier Serum 30ml',
-  volume: '30ml',
-  matchScore: 88,
-  safetyStatus: SafetyStatus.lowRisk,
-  allergyPotential: AllergyPotential.veryLow,
-  comedogenicScale: '0-1',
-  formulaPh: '5.5 (Ideal)',
-  keyWarning:
-      'Mengandung Phenoxyethanol & Fragrance Alami 0.05% — Lakukan patch test jika sedang iritasi aktif',
-  routineRecommendation:
-      'Formula ini ramah untuk skin barrier bertipe Kombinasi & Sensitif. Gunakan setelah toner, sebelum pelembab.',
-  ingredients: const [
-    IngredientItem(
-      id: 'niacinamide',
-      inciName: 'NIACINAMIDE',
-      cleanName: 'Niacinamide 2.0%',
-      concentration: '2.0%',
-      category: IngredientSafetyCategory.hero,
-      comedogenicRating: 0,
-      irritancyRating: 0,
-      functionDescription: 'Mencerahkan & meratakan warna kulit',
-    ),
-    IngredientItem(
-      id: 'centella',
-      inciName: 'CENTELLA ASIATICA EXTRACT',
-      cleanName: 'Centella Asiatica',
-      category: IngredientSafetyCategory.hero,
-      comedogenicRating: 0,
-      irritancyRating: 0,
-      functionDescription: 'Menenangkan & mempercepat regenerasi barrier',
-    ),
-    IngredientItem(
-      id: 'ceramide',
-      inciName: 'CERAMIDE NP',
-      cleanName: 'Ceramide NP',
-      category: IngredientSafetyCategory.hero,
-      comedogenicRating: 0,
-      irritancyRating: 0,
-      functionDescription: 'Memperkuat skin barrier & retensi hidrasi',
-    ),
-    IngredientItem(
-      id: 'aqua',
-      inciName: 'AQUA',
-      cleanName: 'Air (Aqua)',
-      category: IngredientSafetyCategory.safeCarrier,
-      comedogenicRating: 0,
-      irritancyRating: 0,
-      functionDescription: 'Pelarut utama formulasi',
-    ),
-    IngredientItem(
-      id: 'glycerin',
-      inciName: 'GLYCERIN',
-      cleanName: 'Glycerin',
-      category: IngredientSafetyCategory.safeCarrier,
-      comedogenicRating: 0,
-      irritancyRating: 0,
-      functionDescription: 'Humektan, menarik & mengikat air ke kulit',
-    ),
-    IngredientItem(
-      id: 'butylene',
-      inciName: 'BUTYLENE GLYCOL',
-      cleanName: 'Butylene Glycol',
-      category: IngredientSafetyCategory.safeCarrier,
-      comedogenicRating: 1,
-      irritancyRating: 0,
-      functionDescription: 'Pelarut & kondisioner kulit',
-    ),
-    IngredientItem(
-      id: 'fragrance',
-      inciName: 'PARFUM',
-      cleanName: 'Parfum / Aroma Botanikal 0.05%',
-      concentration: '0.05%',
-      category: IngredientSafetyCategory.warning,
-      comedogenicRating: 0,
-      irritancyRating: 1,
-      functionDescription: 'Pewangi botanikal konsentrasi rendah',
-      warningNote: 'Potensi alergen pada kulit sensitif',
-    ),
-  ],
-);
 
 // ── Result Screen ─────────────────────────────────────────────────────────────
 
@@ -132,14 +42,59 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
 
   @override
   Widget build(BuildContext context) {
-    final result = ref.watch(scanResultProvider(widget.scanId));
+    final result = ref.watch(scanDetailProvider(widget.scanId));
+    return result.when(
+      data: (value) => _buildResult(context, value),
+      loading: () => const Scaffold(
+        backgroundColor: AppColors.backgroundSoft,
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, _) => Scaffold(
+        backgroundColor: AppColors.backgroundSoft,
+        appBar: AppBar(
+          title: const Text('Hasil Pindai'),
+          leading: IconButton(
+            icon: const Icon(LucideIcons.arrow_left),
+            onPressed: () => context.pop(),
+          ),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  error.toString(),
+                  textAlign: TextAlign.center,
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.invalidate(scanDetailProvider(widget.scanId)),
+                  child: const Text('Coba Lagi'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResult(BuildContext context, ScanAnalysisResult result) {
     final heroIngredients = result.ingredients
         .where((i) => i.category == IngredientSafetyCategory.hero)
         .toList();
     final warningIngredients = result.ingredients
-        .where((i) =>
-            i.category == IngredientSafetyCategory.warning ||
-            i.category == IngredientSafetyCategory.irritant)
+        .where(
+          (i) =>
+              i.category == IngredientSafetyCategory.warning ||
+              i.category == IngredientSafetyCategory.irritant,
+        )
         .toList();
 
     return Scaffold(
@@ -169,8 +124,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
                       // ── Ingredients Section ──────────────────────────────
                       Text(
                         'Komposisi INCI',
-                        style: AppTypography.headingSmall
-                            .copyWith(color: AppColors.textPrimary),
+                        style: AppTypography.headingSmall.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                       const SizedBox(height: 12),
                     ],
@@ -268,9 +224,14 @@ class _ProductHeroAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final (statusColor, statusBg) = switch (result.safetyStatus) {
       SafetyStatus.lowRisk => (AppColors.statusSafe, AppColors.statusSafeBg),
-      SafetyStatus.moderateRisk =>
-        (AppColors.statusWarning, AppColors.statusWarningBg),
-      SafetyStatus.highRisk => (AppColors.statusDanger, AppColors.statusDangerBg),
+      SafetyStatus.moderateRisk => (
+        AppColors.statusWarning,
+        AppColors.statusWarningBg,
+      ),
+      SafetyStatus.highRisk => (
+        AppColors.statusDanger,
+        AppColors.statusDangerBg,
+      ),
     };
 
     return SliverAppBar(
@@ -325,31 +286,38 @@ class _ProductHeroAppBar extends StatelessWidget {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: statusBg.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                              color: statusColor.withValues(alpha: 0.5)),
+                            color: statusColor.withValues(alpha: 0.5),
+                          ),
                         ),
                         child: Text(
                           'INCI Terverifikasi',
-                          style: AppTypography.badgeText
-                              .copyWith(color: statusColor),
+                          style: AppTypography.badgeText.copyWith(
+                            color: statusColor,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: statusBg.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           result.safetyStatus.label.toUpperCase(),
-                          style: AppTypography.badgeText
-                              .copyWith(color: statusColor),
+                          style: AppTypography.badgeText.copyWith(
+                            color: statusColor,
+                          ),
                         ),
                       ),
                     ],
@@ -431,13 +399,18 @@ class _KeyWarningCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.statusWarningBg,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.statusWarning.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: AppColors.statusWarning.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(LucideIcons.triangle_alert,
-              size: 18, color: AppColors.statusWarningDark),
+          const Icon(
+            LucideIcons.triangle_alert,
+            size: 18,
+            color: AppColors.statusWarningDark,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -515,8 +488,10 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      child;
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) => child;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
@@ -551,10 +526,12 @@ class _IngredientTabView extends StatelessWidget {
 
         return Column(
           children: ingredients
-              .map((i) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: IngredientStatusCard(ingredient: i),
-                  ))
+              .map(
+                (i) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: IngredientStatusCard(ingredient: i),
+                ),
+              )
               .toList(),
         );
       },

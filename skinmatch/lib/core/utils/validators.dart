@@ -7,17 +7,22 @@ class Validators {
     return null;
   }
 
+  static String? email(String? value) {
+    final v = (value ?? '').trim();
+    if (v.isEmpty) return 'Email wajib diisi';
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(v)) return 'Format email tidak valid';
+    return null;
+  }
+
   static String? emailOrPhone(String? value) {
     final v = (value ?? '').trim();
     if (v.isEmpty) return 'Email atau No. Handphone wajib diisi';
 
-    if (v.contains('@')) {
-      final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-      if (!emailRegex.hasMatch(v)) return 'Format email tidak valid';
-    } else {
-      final phoneRegex = RegExp(r'^(\+62|62|0)8[0-9]{8,11}$');
-      if (!phoneRegex.hasMatch(v)) return 'Format No. Handphone tidak valid';
-    }
+    if (v.contains('@')) return email(v);
+
+    final phoneRegex = RegExp(r'^(\+62|62|0)8[0-9]{8,11}$');
+    if (!phoneRegex.hasMatch(v)) return 'Format No. Handphone tidak valid';
     return null;
   }
 

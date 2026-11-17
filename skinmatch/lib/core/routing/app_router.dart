@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../network/api_client.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/profile/presentation/skin_profile_screen.dart';
@@ -77,8 +78,29 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
 
     // Redirect root to scan
-    redirect: (context, state) {
-      if (state.uri.path == '/') return AppRoutes.scan;
+    redirect: (context, state) async {
+      final path = state.uri.path;
+      if (path == AppRoutes.shell) return AppRoutes.scan;
+
+      final api = ref.read(apiClientProvider);
+      final hasSession = await api.hasSession();
+      final isPublicRoute =
+          path == AppRoutes.auth || path == AppRoutes.forgotPassword;
+
+      if (!hasSession) return isPublicRoute ? null : AppRoutes.auth;
+      if (path == AppRoutes.auth) {
+        try {
+          final profile = await api.getProfile();
+          return profile['profile_completed'] == true
+              ? AppRoutes.scan
+              : AppRoutes.profile;
+        } on ApiException catch (error) {
+          if (error.statusCode == 401) {
+            await api.logout();
+          }
+          return null;
+        }
+      }
       return null;
     },
 
