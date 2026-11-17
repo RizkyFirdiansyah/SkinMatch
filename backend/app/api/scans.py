@@ -7,8 +7,61 @@ from app.models.scan import Scan
 from app.schemas.scan import ScanResponse, ScanListResponse
 import os
 import uuid
+import joblib
+import json
+import numpy as np
+import cv2
+import threading
+from pathlib import Path
+from app.skinmatch_ml.ocr.engine import create_ocr, extract_text
+from app.skinmatch_ml.text.extract import LexiconMatcher
+from app.skinmatch_ml.classify.model import predict_scores
 
 router = APIRouter(prefix="/api/scans", tags=["Scans"])
+
+# Global ML State
+_ml_state = {
+    "ocr": None,
+    "matcher": None,
+    "clf": None,
+    "labels_config": None,
+    "initialized": False
+}
+_lock = threading.Lock()
+
+def _ensure_initialized():
+    with _lock:
+        if _ml_state["initialized"]:
+            return
+        
+        # Load OCR
+        _ml_state["ocr"] = create_ocr(tier="small")
+        
+        # Load Lexicon
+        lex_path = Path("data/lexicon/lexicon_v1.csv")
+        alias_path = Path("data/lexicon/alias_v1.csv")
+        _ml_state["matcher"] = LexiconMatcher.from_files(lex_path, alias_path)
+        
+        # Map skinmatch_ml to app.skinmatch_ml for joblib unpickling compatibility
+        import sys
+        import app.skinmatch_ml
+        import app.skinmatch_ml.classify
+        import app.skinmatch_ml.classify.model
+        import app.skinmatch_ml.text
+        import app.skinmatch_ml.ocr
+        
+        sys.modules['skinmatch_ml'] = app.skinmatch_ml
+        sys.modules['skinmatch_ml.classify'] = app.skinmatch_ml.classify
+        sys.modules['skinmatch_ml.classify.model'] = app.skinmatch_ml.classify.model
+        sys.modules['skinmatch_ml.text'] = app.skinmatch_ml.text
+        sys.modules['skinmatch_ml.ocr'] = app.skinmatch_ml.ocr
+
+        # Load Model
+        _ml_state["clf"] = joblib.load("models/model.joblib")
+        with open("models/labels.json", "r", encoding="utf-8") as f:
+            _ml_state["labels_config"] = json.load(f)
+            
+        _ml_state["initialized"] = True
 
 MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB
 
@@ -74,48 +127,83 @@ async def create_scan(
     with open(filepath, "wb") as f:
         f.write(contents)
     
-    # 3. DUMMY OCR - Replace dengan Risky's module di Week 6
-    dummy_ocr_result = {
-        "raw_text": "Aqua, Glycerin, Niacinamide, Hyaluronic Acid, Dimethicone",
-        "confidence": 92.3,
-        "success": True
-    }
+    # 3. Real OCR & Lexicon Extraction
+    _ensure_initialized()
     
-    # 4. DUMMY ML Classification - Replace dengan Rizky's model di Week 7
-    dummy_ml_result = {
-        "result": "Cocok",
-        "result_code": 0,
-        "confidence": 87.5,
-        "explanation": f"Produk ini cocok untuk kulit {current_user.skin_type.value} Anda",
-        "safe_ingredients": ["Aqua", "Glycerin", "Niacinamide", "Hyaluronic Acid"],
-        "risky_ingredients": [],
-        "warnings": []
+    img = cv2.imdecode(np.frombuffer(contents, np.uint8), cv2.IMREAD_COLOR)
+    if img is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Gambar tidak dapat dibaca"
+        )
+    
+    try:
+        ocr_output = _ml_state["ocr"].predict(img)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"OCR gagal: {type(exc).__name__}"
+        ) from exc
+        
+    texts, scores = extract_text(ocr_output)
+    raw_text = "\n".join(texts)
+    ocr_confidence = float(np.mean(scores) * 100) if scores else 0.0
+    
+    # Extract ingredients using LexiconMatcher
+    extracted_ingredients = _ml_state["matcher"].extract(raw_text)
+    
+    # 4. ML Classification using model.joblib
+    text_for_clf = ", ".join(extracted_ingredients)
+    scores_array = predict_scores(_ml_state["clf"], [text_for_clf])[0]
+    
+    skin_type_map = {
+        "Normal": "Normal",
+        "Kering": "Kering",
+        "Sensitif": "Sensitif",
+        "Berminyak": "Berminyak_Berjerawat"
     }
-
+    user_label = skin_type_map.get(current_user.skin_type.value, "Normal")
+    labels = _ml_state["labels_config"]["labels"]
+    
+    try:
+        label_idx = labels.index(user_label)
+        user_score = float(scores_array[label_idx])
+    except (ValueError, IndexError):
+        user_score = 0.5
+        
+    threshold = _ml_state["labels_config"]["thresholds"].get(user_label, 0.5)
+    is_suitable = user_score >= threshold
+    
+    ml_result = "Cocok" if is_suitable else "Tidak Cocok"
+    ml_code = 0 if is_suitable else 1
+    confidence = round(user_score * 100, 1)
+    
+    explanation = f"Produk ini {'cocok' if is_suitable else 'kurang cocok'} untuk kulit {current_user.skin_type.value} Anda berdasarkan analisis bahan aktif."
+    
+    safe_list = [{"name": ing, "function": "Active / Ingredient", "risk_level": "safe"} for ing in extracted_ingredients]
     ingredients_analysis = {
-        "safe": [
-            {"name": ing, "function": "Moisturizing", "risk_level": "safe"}
-            for ing in dummy_ml_result["safe_ingredients"]
-        ],
+        "safe": safe_list,
         "risky": [],
         "unknown": []
     }
+    warnings = [] if is_suitable else ["Komposisi bahan kurang selaras dengan tipe kulit Anda."]
+    
     classification_details = {
-        "explanation": dummy_ml_result["explanation"],
+        "explanation": explanation,
         "ingredients_analysis": ingredients_analysis,
-        "warnings": dummy_ml_result["warnings"],
-        "recommendations": "Produk ini aman digunakan untuk tipe kulit Anda"
+        "warnings": warnings,
+        "recommendations": "Produk ini aman digunakan" if is_suitable else "Disarankan konsultasi atau pilih produk lain yang lebih sesuai."
     }
 
     # 5. Save to database
     new_scan = Scan(
         user_id=current_user.id,
         image_path=image_path,
-        ocr_raw_text=dummy_ocr_result["raw_text"],
-        ocr_confidence=dummy_ocr_result["confidence"],
-        classification_result=dummy_ml_result["result"],
-        classification_code=dummy_ml_result["result_code"],
-        confidence=dummy_ml_result["confidence"],
+        ocr_raw_text=raw_text,
+        ocr_confidence=ocr_confidence,
+        classification_result=ml_result,
+        classification_code=ml_code,
+        confidence=confidence,
         classification_details=classification_details
     )
     
@@ -132,17 +220,17 @@ async def create_scan(
             "timestamp": new_scan.created_at.isoformat(),
             "image_url": f"/{image_path}",
             "ocr_result": {
-                "raw_text": dummy_ocr_result["raw_text"],
-                "confidence": dummy_ocr_result["confidence"],
-                "ingredients_detected": 5
+                "raw_text": raw_text,
+                "confidence": ocr_confidence,
+                "ingredients_detected": len(extracted_ingredients)
             },
             "classification": {
-                "result": dummy_ml_result["result"],
-                "result_code": dummy_ml_result["result_code"],
-                "confidence": dummy_ml_result["confidence"],
-                "explanation": dummy_ml_result["explanation"],
+                "result": ml_result,
+                "result_code": ml_code,
+                "confidence": confidence,
+                "explanation": explanation,
                 "ingredients_analysis": ingredients_analysis,
-                "warnings": dummy_ml_result["warnings"],
+                "warnings": warnings,
                 "recommendations": classification_details["recommendations"]
             }
         }
