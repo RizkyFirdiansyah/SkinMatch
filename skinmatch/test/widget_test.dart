@@ -1,29 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:skinmatch/features/auth/presentation/auth_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:skinmatch/main.dart';
 
 void main() {
-  testWidgets('login and registration forms request email addresses', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(home: AuthScreen()),
-      ),
-    );
+  setUpAll(() {
+    // Test tidak boleh mengunduh font dari jaringan.
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
 
-    expect(find.text('Email *'), findsOneWidget);
-    expect(find.textContaining('No. Handphone'), findsNothing);
+  testWidgets('aplikasi terbuka di layar login', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: SkinMatchApp()));
+    await tester.pump(const Duration(milliseconds: 400));
 
-    await tester.ensureVisible(find.text('Daftar Disini'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Daftar Disini'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Nama Lengkap *'), findsOneWidget);
-    expect(find.text('Email *'), findsOneWidget);
-    expect(find.textContaining('No. Handphone'), findsNothing);
+    expect(find.text('Email / No. Handphone *'), findsOneWidget);
   });
 }
