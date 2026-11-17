@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../network/api_client.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
+import '../../features/auth/presentation/welcome_screen.dart';
 import '../../features/profile/presentation/skin_profile_screen.dart';
 import '../../features/analysis/presentation/result_screen.dart';
 import '../../features/scanner/presentation/camera_screen.dart';
@@ -13,6 +14,7 @@ import '../../features/history/presentation/history_screen.dart';
 
 // ── Route Paths ──────────────────────────────────────────────────────────────
 abstract class AppRoutes {
+  static const String welcome = '/welcome';
   static const String auth = '/auth';
   static const String forgotPassword = '/forgot-password';
   static const String profile = '/profile';
@@ -27,9 +29,14 @@ abstract class AppRoutes {
 // ── Router Provider ──────────────────────────────────────────────────────────
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: AppRoutes.auth,
+    initialLocation: AppRoutes.welcome,
     debugLogDiagnostics: true,
     routes: [
+      GoRoute(
+        path: AppRoutes.welcome,
+        builder: (context, state) => const WelcomeScreen(),
+      ),
+
       // Auth — standalone (Masuk / Daftar Akun Baru)
       GoRoute(
         path: AppRoutes.auth,
@@ -85,10 +92,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final api = ref.read(apiClientProvider);
       final hasSession = await api.hasSession();
       final isPublicRoute =
-          path == AppRoutes.auth || path == AppRoutes.forgotPassword;
+          path == AppRoutes.welcome ||
+          path == AppRoutes.auth ||
+          path == AppRoutes.forgotPassword;
 
       if (!hasSession) return isPublicRoute ? null : AppRoutes.auth;
-      if (path == AppRoutes.auth) {
+      if (path == AppRoutes.auth || path == AppRoutes.welcome) {
         try {
           final profile = await api.getProfile();
           return profile['profile_completed'] == true
