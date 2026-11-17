@@ -1,0 +1,81 @@
+{
+  "dataset_dir": "E:\\FR_COMP\\Kuliah\\Semester5\\PBL\\SkinMatch\\MachineLearning\\dataset",
+  "total_products": 50969,
+  "raw_tokens_kept": 23602,
+  "lexicon_rows": 23661,
+  "alias_rows": 4428,
+  "tier_counts": {
+    "A": 3747,
+    "B": 4671,
+    "C": 15184
+  },
+  "label_source_entries": 247,
+  "label_entries_matched": 188,
+  "label_entries_unmatched": 59,
+  "label_entries_unmatched_sample": [
+    "aquagenium",
+    "apple stem cells",
+    "apple polyphenols",
+    "anti-ageing peptides",
+    "azelaoyl bis-dipeptide",
+    "avocado ferment",
+    "avene thermal water",
+    "caffeic acid",
+    "blue mallow extract",
+    "blue lotus extract",
+    "bio-active glucosides",
+    "chemical uv filters",
+    "dioic acid",
+    "copper peptide",
+    "copper palmitoyl heptapeptide",
+    "cinnamon bark",
+    "ferric hexapeptide",
+    "fernblock",
+    "essential lipids",
+    "endothelyol"
+  ],
+  "synonyms_merged": [
+    {
+      "variant": "water",
+      "canonical": "aqua",
+      "freq_moved": 15567
+    },
+    {
+      "variant": "fragrance",
+      "canonical": "parfum",
+      "freq_moved": 12701
+    },
+    {
+      "variant": "glycerol",
+      "canonical": "glycerin",
+      "freq_moved": 77
+    },
+    {
+      "variant": "glycerine",
+      "canonical": "glycerin",
+      "freq_moved": 269
+    },
+    {
+      "variant": "vitamin e",
+      "canonical": "tocopherol",
+      "freq_moved": 638
+    },
+    {
+      "variant": "vitamin c",
+      "canonical": "ascorbic acid",
+      "freq_moved": 133
+    }
+  ],
+  "quality": {
+    "entries_with_damage_char": 0,
+    "entries_non_ascii": 98
+  },
+  "coverage": {
+    "checked": 103,
+    "covered": 103,
+    "ratio": 1.0,
+    "gate": 0.9,
+    "passed": true,
+    "missing": []
+  }
+}
