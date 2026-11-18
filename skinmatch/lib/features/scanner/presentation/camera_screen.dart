@@ -107,22 +107,9 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
   }
 
   Future<void> _openResult(String scanId) async {
-    // Hanya lepas kamera bila memang sedang hidup, supaya kartu izin/tidak
-    // tersedia tidak berubah menjadi spinner dan dialog izin tidak muncul
-    // ulang setiap kali pengguna kembali dari halaman hasil.
-    final hadLiveCamera = _controller.stage == ScannerStage.ready;
-
-    if (hadLiveCamera) {
-      await _controller.pauseCamera();
-      if (!mounted) return;
-    }
-
+    // Keep camera initialized while result route is open. Scanner preview
+    // remains mounted, and next scan avoids a full camera startup cycle.
     await context.push(AppRoutes.analysisPath(scanId));
-    if (!mounted) return;
-
-    if (hadLiveCamera) {
-      await _controller.start();
-    }
   }
 
   Future<void> _handleTorch() async {

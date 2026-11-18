@@ -87,6 +87,10 @@ class DeviceCameraGateway implements CameraGateway {
 
   @override
   Future<void> initialize() async {
+    // Reuse live camera after returning from result screen; reinitializing
+    // needlessly adds permission, device discovery, and sensor startup delay.
+    if (isReady) return;
+
     await dispose();
 
     // Minta izin lebih dulu lewat permission_handler supaya status "jangan

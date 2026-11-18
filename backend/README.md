@@ -16,9 +16,9 @@ Backend REST API untuk aplikasi SkinMatch - analisis kecocokan produk kosmetik b
 
 ```bash
 cd backend
-pyth
-venv\Scripts\activate  # Windows
-pip install -r requirements.txt
+py -3.12 -m venv .venv
+\.venv\Scripts\Activate.ps1  # Windows PowerShell
+python -m pip install -r requirements.txt
 ```
 
 ### 2. Configure Environment

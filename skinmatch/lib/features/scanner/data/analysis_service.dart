@@ -1,3 +1,6 @@
+import 'package:image_picker/image_picker.dart';
+
+import '../../../core/network/api_client.dart';
 import 'scanner_models.dart';
 
 /// Titik integrasi ke backend `POST /api/scans`.
@@ -8,18 +11,23 @@ abstract interface class AnalysisService {
   Future<String> submit(CapturedScan scan);
 }
 
-class DummyAnalysisService implements AnalysisService {
-  const DummyAnalysisService({
-    this.delay = const Duration(milliseconds: 900),
-    this.scanId = 'demo-scan-001',
-  });
+class ApiAnalysisService implements AnalysisService {
+  const ApiAnalysisService(this._apiClient);
 
-  final Duration delay;
-  final String scanId;
+  final ApiClient _apiClient;
 
   @override
   Future<String> submit(CapturedScan scan) async {
-    await Future<void>.delayed(delay);
-    return scanId;
+    try {
+      final result = await _apiClient.uploadScan(XFile(scan.file.path));
+      final scanId = result['scan_id'];
+      if (scanId is int && scanId > 0) return scanId.toString();
+      throw const ScannerFailure(
+        ScannerErrorCode.analysisFailed,
+        'Server tidak mengembalikan ID pindai yang valid.',
+      );
+    } on ApiException catch (error) {
+      throw ScannerFailure(ScannerErrorCode.analysisFailed, error.message);
+    }
   }
 }
