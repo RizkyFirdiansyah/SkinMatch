@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.database import get_db
@@ -14,6 +15,18 @@ def search_products(
     brand: Optional[str] = Query(None, description="Filter by brand (partial match)"),
     category: Optional[str] = Query(None, description="Filter by category slug"),
     keyword: Optional[str] = Query(None, description="Search in product name"),
+    search_in: str = Query("name", description="Search in all, name, brand, or ingredient"),
+    categories: Optional[str] = Query(None, description="Comma-separated category slugs"),
+    brands: Optional[str] = Query(None, description="Comma-separated exact brand names"),
+    min_price: Optional[float] = Query(None, ge=0),
+    max_price: Optional[float] = Query(None, ge=0),
+    include_ingredients: Optional[str] = Query(
+        None, description="Comma-separated ingredients that must be present"
+    ),
+    exclude_ingredients: Optional[str] = Query(
+        None, description="Comma-separated ingredients that must be absent"
+    ),
+    sort_by: str = Query("name", description="Sort by name, price_asc, or price_desc"),
     limit: int = Query(10, ge=1, le=50, description="Results per page"),
     offset: int = Query(0, ge=0, description="Pagination offset"),
     db: Session = Depends(get_db)
@@ -28,27 +41,86 @@ def search_products(
     - `/api/search/products?brand=Wardah&category=serum` - Serum Wardah saja
     - `/api/search/products?limit=20&offset=0` - Pagination
     """
+    valid_search_fields = {"all", "name", "brand", "ingredient"}
+    if search_in not in valid_search_fields:
+        raise HTTPException(status_code=400, detail="search_in tidak valid")
+
+    valid_sorts = {"name", "price_asc", "price_desc"}
+    if sort_by not in valid_sorts:
+        raise HTTPException(status_code=400, detail="sort_by tidak valid")
+
+    if min_price is not None and max_price is not None and min_price > max_price:
+        raise HTTPException(
+            status_code=400,
+            detail="Harga minimum tidak boleh melebihi harga maksimum",
+        )
+
+    def split_values(value: Optional[str]) -> list[str]:
+        if not value:
+            return []
+        return [part.strip() for part in value.split(",") if part.strip()]
+
     # Base query dengan join category
     query = db.query(Product).join(Category)
-    
+
     # Filter by brand (case insensitive, partial match)
     if brand:
         query = query.filter(Product.brand.ilike(f"%{brand}%"))
-    
+
     # Filter by category slug
     if category:
         query = query.filter(Category.slug == category)
-    
-    # Search by keyword in product name
+
+    selected_categories = split_values(categories)
+    if selected_categories:
+        query = query.filter(Category.slug.in_(selected_categories))
+
+    selected_brands = split_values(brands)
+    if selected_brands:
+        query = query.filter(Product.brand.in_(selected_brands))
+
+    # Search by keyword in selected product fields
     if keyword:
-        query = query.filter(Product.name.ilike(f"%{keyword}%"))
-    
+        term = f"%{keyword.strip()}%"
+        if search_in == "name":
+            query = query.filter(Product.name.ilike(term))
+        elif search_in == "brand":
+            query = query.filter(Product.brand.ilike(term))
+        elif search_in == "ingredient":
+            query = query.filter(Product.ingredients_text.ilike(term))
+        else:
+            query = query.filter(
+                or_(
+                    Product.name.ilike(term),
+                    Product.brand.ilike(term),
+                    Product.ingredients_text.ilike(term),
+                )
+            )
+
+    for ingredient in split_values(include_ingredients):
+        query = query.filter(Product.ingredients_text.ilike(f"%{ingredient}%"))
+
+    for ingredient in split_values(exclude_ingredients):
+        query = query.filter(~Product.ingredients_text.ilike(f"%{ingredient}%"))
+
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+
     # Count total results (before pagination)
     total = query.count()
-    
+
+    if sort_by == "price_asc":
+        query = query.order_by(Product.price.asc(), Product.name.asc())
+    elif sort_by == "price_desc":
+        query = query.order_by(Product.price.desc(), Product.name.asc())
+    else:
+        query = query.order_by(Product.name.asc())
+
     # Apply pagination
     products = query.limit(limit).offset(offset).all()
-    
+
     # Format response
     results = []
     for p in products:
@@ -60,7 +132,12 @@ def search_products(
             "category_slug": p.category.slug,
             "image_url": p.image_url,
             "bpom_number": p.bpom_number,
-            "price": float(p.price) if p.price else None
+            "price": float(p.price) if p.price is not None else None,
+            "ingredients": [
+                ingredient.strip()
+                for ingredient in (p.ingredients_text or "").split(",")
+                if ingredient.strip()
+            ],
         })
     
     return {

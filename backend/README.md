@@ -80,6 +80,16 @@ Buka http://localhost:8000/docs untuk Swagger UI.
 - `PUT /api/scans/{scan_id}/review` - Create or update a review for a scan (require auth)
 - `DELETE /api/scans/{scan_id}/review` - Delete a review for a scan (require auth)
 
+### Product Search
+- `GET /api/search/products` - Search and filter catalog products
+- `GET /api/search/categories` - List product categories
+- `GET /api/search/brands` - List available brands
+
+Product search accepts `keyword`, `search_in` (`all`, `name`, `brand`, or `ingredient`),
+comma-separated `categories`, `brands`, `include_ingredients`, and
+`exclude_ingredients`, plus `min_price`, `max_price`, and `sort_by`
+(`name`, `price_asc`, or `price_desc`).
+
 ### Utility
 - `GET /health` - Health check (termasuk cek koneksi database)
 - `GET /` - Root info

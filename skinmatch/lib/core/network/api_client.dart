@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../shared/models/product_catalog_models.dart';
 import '../../shared/models/skinmatch_models.dart';
 
 class ApiException implements Exception {
@@ -192,6 +193,141 @@ class ApiClient {
   Future<Map<String, dynamic>> getProfile() async {
     final response = await _request('GET', '/api/profile', authenticated: true);
     return _responseData(response);
+  }
+
+  Future<ProductCatalogPage> searchCatalogProducts({
+    String keyword = '',
+    String searchIn = 'all',
+    ProductSearchFilters filters = const ProductSearchFilters(),
+    String sortBy = 'name',
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    final queryParameters = <String, String>{
+      'search_in': searchIn,
+      'sort_by': sortBy,
+      'limit': '$limit',
+      'offset': '$offset',
+      if (keyword.trim().isNotEmpty) 'keyword': keyword.trim(),
+      if (filters.categories.isNotEmpty)
+        'categories': (filters.categories.toList()..sort()).join(','),
+      if (filters.brands.isNotEmpty)
+        'brands': (filters.brands.toList()..sort()).join(','),
+      if (filters.priceEnabled && filters.minimumPrice != null)
+        'min_price': '${filters.minimumPrice}',
+      if (filters.priceEnabled && filters.maximumPrice != null)
+        'max_price': '${filters.maximumPrice}',
+      if (filters.includeIngredients.isNotEmpty)
+        'include_ingredients': filters.includeIngredients.join(','),
+      if (filters.excludeIngredients.isNotEmpty)
+        'exclude_ingredients': filters.excludeIngredients.join(','),
+    };
+    final uri = _uri('/api/search/products').replace(
+      queryParameters: queryParameters,
+    );
+    final data = _responseData(await _getJson(uri));
+    final rawProducts = data['products'];
+    final rawPagination = data['pagination'];
+    if (rawProducts is! List || rawPagination is! Map<String, dynamic>) {
+      throw const ApiException('Hasil pencarian produk dari server tidak valid.');
+    }
+
+    final products = rawProducts.map((rawProduct) {
+      if (rawProduct is! Map<String, dynamic>) {
+        throw const ApiException('Data produk dari server tidak valid.');
+      }
+      final id = rawProduct['id'];
+      final name = rawProduct['name'];
+      final brand = rawProduct['brand'];
+      final category = rawProduct['category'];
+      final categorySlug = rawProduct['category_slug'];
+      final rawIngredients = rawProduct['ingredients'];
+      final price = rawProduct['price'];
+      if (id is! num ||
+          name is! String ||
+          brand is! String ||
+          category is! String ||
+          categorySlug is! String ||
+          (rawIngredients != null && rawIngredients is! List) ||
+          (rawIngredients is List &&
+              rawIngredients.any((ingredient) => ingredient is! String)) ||
+          (price != null && price is! num)) {
+        throw const ApiException('Data produk dari server tidak valid.');
+      }
+      final ingredients = rawIngredients is List
+          ? rawIngredients.cast<String>()
+          : const <String>[];
+      return ProductCatalogItem(
+        id: id.toInt(),
+        name: name,
+        brand: brand,
+        category: category,
+        categorySlug: categorySlug,
+        ingredients: ingredients,
+        bpomNumber: rawProduct['bpom_number']?.toString(),
+        price: price is num ? price.toDouble() : null,
+        imageUrl: _absoluteUrl(rawProduct['image_url']?.toString()),
+      );
+    }).toList();
+
+    final total = rawPagination['total'];
+    final responseOffset = rawPagination['offset'];
+    final hasMore = rawPagination['has_more'];
+    if (total is! num || responseOffset is! num || hasMore is! bool) {
+      throw const ApiException('Halaman hasil produk dari server tidak valid.');
+    }
+    return ProductCatalogPage(
+      products: products,
+      total: total.toInt(),
+      offset: responseOffset.toInt(),
+      hasMore: hasMore,
+    );
+  }
+
+  Future<List<ProductCategoryOption>> getProductCategories() async {
+    final data = _responseData(await _request('GET', '/api/search/categories'));
+    final rawCategories = data['categories'];
+    if (rawCategories is! List) {
+      throw const ApiException('Daftar kategori produk dari server tidak valid.');
+    }
+    return rawCategories.map((rawCategory) {
+      if (rawCategory is! Map<String, dynamic>) {
+        throw const ApiException('Data kategori produk dari server tidak valid.');
+      }
+      final name = rawCategory['name'];
+      final slug = rawCategory['slug'];
+      if (name is! String || slug is! String) {
+        throw const ApiException('Data kategori produk dari server tidak valid.');
+      }
+      return ProductCategoryOption(
+        name: name,
+        slug: slug,
+      );
+    }).toList();
+  }
+
+  Future<List<String>> getProductBrands() async {
+    final data = _responseData(await _request('GET', '/api/search/brands'));
+    final rawBrands = data['brands'];
+    if (rawBrands is! List || rawBrands.any((brand) => brand is! String)) {
+      throw const ApiException('Daftar merek produk dari server tidak valid.');
+    }
+    return rawBrands.cast<String>();
+  }
+
+  Future<Map<String, dynamic>> _getJson(Uri uri) async {
+    try {
+      final response = await _client
+          .get(uri, headers: await _headers())
+          .timeout(const Duration(seconds: 30));
+      return _decodeResponse(response);
+    } on http.ClientException {
+      throw const ApiException(
+        'Koneksi ke server gagal. Pastikan backend sedang berjalan.',
+      );
+    } on TimeoutException {
+      throw const ApiException('Server terlalu lama merespons. Coba lagi.');
+    }
   }
 
   Future<Map<String, dynamic>> updateProfile({

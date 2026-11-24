@@ -9,6 +9,7 @@ import '../../features/auth/presentation/welcome_screen.dart';
 import '../../features/profile/presentation/skin_profile_screen.dart';
 import '../../features/analysis/presentation/result_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/product_search/presentation/product_search_screen.dart';
 import '../../features/scanner/presentation/camera_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 import '../../features/history/presentation/history_screen.dart';
@@ -25,6 +26,7 @@ abstract class AppRoutes {
   static const String scan = '/scan';
   static const String analysis = '/analysis/:id';
   static const String history = '/history';
+  static const String productSearch = '/products/search';
 
   static String analysisPath(String id) => '/analysis/$id';
 }
@@ -94,6 +96,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final scanId = state.pathParameters['id'] ?? '';
           return _fadeTransition(state, ResultScreen(scanId: scanId));
         },
+      ),
+
+      GoRoute(
+        path: AppRoutes.productSearch,
+        pageBuilder: (context, state) =>
+            _fadeTransition(state, const ProductSearchScreen()),
       ),
     ],
 

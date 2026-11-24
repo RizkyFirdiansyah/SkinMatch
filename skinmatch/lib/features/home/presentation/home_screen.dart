@@ -51,7 +51,10 @@ class HomeScreen extends ConsumerWidget {
                 ageRange: ageRange,
               ),
               const SizedBox(height: 20),
-              _ScanPrompt(onScan: () => context.go(AppRoutes.scan)),
+              _ScanPrompt(
+                onScan: () => context.go(AppRoutes.scan),
+                onSearch: () => context.push(AppRoutes.productSearch),
+              ),
               const SizedBox(height: 14),
               profile.when(
                 data: (data) => _ProfileSummary(
@@ -270,9 +273,10 @@ class _ProfileMenuLabel extends StatelessWidget {
 }
 
 class _ScanPrompt extends StatelessWidget {
-  const _ScanPrompt({required this.onScan});
+  const _ScanPrompt({required this.onScan, required this.onSearch});
 
   final VoidCallback onScan;
+  final VoidCallback onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -300,18 +304,34 @@ class _ScanPrompt extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: onScan,
-              icon: const Icon(Icons.document_scanner_outlined, size: 18),
-              label: const Text('Pindai Komposisi'),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.cardSurface,
-                foregroundColor: AppColors.primaryDark,
-                minimumSize: const Size.fromHeight(46),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: onScan,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.cardSurface,
+                    foregroundColor: AppColors.primaryDark,
+                    minimumSize: const Size.fromHeight(46),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  child: const Text('Pindai Komposisi'),
+                ),
               ),
-            ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: FilledButton(
+                  onPressed: onSearch,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primarySageLight,
+                    foregroundColor: AppColors.textOnDark,
+                    minimumSize: const Size.fromHeight(46),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  child: const Text('Cari Produk'),
+                ),
+              ),
+            ],
           ),
         ],
       ),

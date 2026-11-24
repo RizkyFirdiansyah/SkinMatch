@@ -32,6 +32,7 @@ void main() {
     expect(find.text('Kombinasi  ·  25-34 tahun'), findsOneWidget);
     expect(find.text('Terakhir dipindai'), findsOneWidget);
     expect(find.text('Lihat semua'), findsOneWidget);
+    expect(find.text('Cari Produk'), findsOneWidget);
     expect(find.text('Belum ada hasil pindai'), findsOneWidget);
 
     await tester.tap(find.byType(CircleAvatar));

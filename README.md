@@ -571,6 +571,8 @@ lib/
 │   ├── analysis/                 Hasil klasifikasi ingredients (merah/hijau)
 │   │   ├── presentation/         result_screen.dart
 │   │   └── widgets/              ingredient_status_card.dart
+│   ├── product_search/           Pencarian dan filter katalog produk
+│   │   └── presentation/         product_search_screen.dart, product_search_filter_sheet.dart
 │   └── history/                  Dasbor dan riwayat pemindaian
 │       ├── presentation/         history_screen.dart
 │       └── widgets/              history_list_item.dart
