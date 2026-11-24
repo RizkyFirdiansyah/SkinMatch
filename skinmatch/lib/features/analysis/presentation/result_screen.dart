@@ -8,13 +8,12 @@ import '../../../core/constants/app_typography.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../shared/models/skinmatch_models.dart';
-import '../widgets/circular_score.dart';
 import '../widgets/ingredient_status_card.dart';
 
 // ── Result Screen ─────────────────────────────────────────────────────────────
 
 /// /analysis/:id — Scan Analysis Result Screen
-/// Sesuai PRD Section 2D: Match Score gauge, ingredient breakdown tabs, warnings
+/// Sesuai PRD Section 2D: suitability verdict, ingredient breakdown tabs, warnings
 class ResultScreen extends ConsumerStatefulWidget {
   const ResultScreen({super.key, required this.scanId});
   final String scanId;
@@ -108,18 +107,15 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
 
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ── Match Score + Safety Status ──────────────────────
-                      _MatchScoreCard(result: result),
-                      const SizedBox(height: 16),
-
                       // ── Key Warning Card ─────────────────────────────────
-                      if (result.keyWarning != null)
+                      if (result.keyWarning != null) ...[
                         _KeyWarningCard(warning: result.keyWarning!),
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 16),
+                      ],
 
                       // ── Ingredients Section ──────────────────────────────
                       Text(
@@ -222,167 +218,198 @@ class _ProductHeroAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (statusColor, statusBg) = switch (result.safetyStatus) {
-      SafetyStatus.lowRisk => (AppColors.statusSafe, AppColors.statusSafeBg),
-      SafetyStatus.moderateRisk => (
-        AppColors.statusWarning,
-        AppColors.statusWarningBg,
-      ),
-      SafetyStatus.highRisk => (
-        AppColors.statusDanger,
-        AppColors.statusDangerBg,
-      ),
-    };
+    final statusColor = result.verdict.isSuitable
+        ? AppColors.statusSafe
+        : AppColors.statusDanger;
+    final statusBg = result.verdict.isSuitable
+        ? AppColors.statusSafeBg
+        : AppColors.statusDangerBg;
 
     return SliverAppBar(
-      expandedHeight: 200,
+      expandedHeight: 316,
       pinned: true,
-      backgroundColor: AppColors.primaryDark,
+      backgroundColor: AppColors.backgroundSoft,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
       leading: IconButton(
         icon: const Icon(LucideIcons.arrow_left, color: Colors.white),
         onPressed: () => context.pop(),
       ),
       flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppColors.primaryDark, Color(0xFF2D5440)],
-            ),
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 56, 20, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        result.brand,
-                        style: AppTypography.badgeText.copyWith(
-                          color: AppColors.primarySage,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        result.timestamp,
-                        style: AppTypography.bodySmall.copyWith(
-                          color: Colors.white54,
-                        ),
-                      ),
-                    ],
+        background: LayoutBuilder(
+          builder: (context, constraints) {
+            final isExpanded = constraints.maxHeight > 280;
+            final gradientHeight = constraints.maxHeight > 100
+                ? constraints.maxHeight - 100
+                : constraints.maxHeight;
+
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: ColoredBox(
+                    color: isExpanded
+                        ? AppColors.backgroundSoft
+                        : AppColors.primaryDark,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    result.productName,
-                    style: AppTypography.headingMedium.copyWith(
-                      color: Colors.white,
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: gradientHeight,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [AppColors.primaryDark, Color(0xFF2D5440)],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
+                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 56, 20, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              result.brand,
+                              style: AppTypography.badgeText.copyWith(
+                                color: AppColors.primarySage,
+                              ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              result.timestamp,
+                              style: AppTypography.bodySmall.copyWith(
+                                color: Colors.white54,
+                              ),
+                            ),
+                          ],
                         ),
-                        decoration: BoxDecoration(
-                          color: statusBg.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: statusColor.withValues(alpha: 0.5),
+                        const SizedBox(height: 8),
+                        Text(
+                          result.productName,
+                          style: AppTypography.headingMedium.copyWith(
+                            color: Colors.white,
                           ),
                         ),
-                        child: Text(
-                          'INCI Terverifikasi',
-                          style: AppTypography.badgeText.copyWith(
-                            color: statusColor,
-                          ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.statusSafeBg.withValues(
+                                  alpha: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: AppColors.statusSafe.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'INCI Terverifikasi',
+                                style: AppTypography.badgeText.copyWith(
+                                  color: AppColors.primarySage,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: statusBg.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                result.verdict.label.toUpperCase(),
+                                style: AppTypography.badgeText.copyWith(
+                                  color: statusColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: statusBg.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          result.safetyStatus.label.toUpperCase(),
-                          style: AppTypography.badgeText.copyWith(
-                            color: statusColor,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+                if (isExpanded)
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 0,
+                    child: _SuitabilityCard(result: result),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 }
 
-// ── Match Score Card ──────────────────────────────────────────────────────────
+// ── Suitability Card ──────────────────────────────────────────────────────────
 
-class _MatchScoreCard extends StatelessWidget {
-  const _MatchScoreCard({required this.result});
+class _SuitabilityCard extends StatelessWidget {
+  const _SuitabilityCard({required this.result});
   final ScanAnalysisResult result;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.cardSurface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: AppColors.cardShadow,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircularMatchScore(score: result.matchScore),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  result.safetyStatus.label,
-                  style: AppTypography.headingSmall.copyWith(
-                    color: _scoreColor(result.matchScore),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  result.routineRecommendation,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.5,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+          Text(
+            result.verdict.label,
+            style: AppTypography.displayLarge.copyWith(
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              color: result.verdict.isSuitable
+                  ? AppColors.statusSafe
+                  : AppColors.statusDanger,
             ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            result.routineRecommendation,
+            style: AppTypography.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
+            ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
-  }
-
-  Color _scoreColor(int score) {
-    if (score >= 80) return AppColors.statusSafe;
-    if (score >= 60) return AppColors.statusWarning;
-    return AppColors.statusDanger;
   }
 }
 

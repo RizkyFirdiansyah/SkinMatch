@@ -42,12 +42,12 @@ void main() {
     expect(find.text('Pengaturan'), findsNothing);
   });
 
-  testWidgets('home calculates scan count and average match from history', (
+  testWidgets('home shows scan count and verdict counts from history', (
     tester,
   ) async {
     final scans = [
-      _historyItem(scanId: '1', productName: 'Serum A', score: 88),
-      _historyItem(scanId: '2', productName: 'Serum B', score: 94),
+      _historyItem(scanId: '1', productName: 'Serum A', cocok: true),
+      _historyItem(scanId: '2', productName: 'Serum B', cocok: false),
     ];
 
     await tester.pumpWidget(
@@ -64,9 +64,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('2'), findsOneWidget);
-    expect(find.text('91%'), findsOneWidget);
+    expect(find.text('1'), findsNWidgets(2));
+    expect(find.textContaining('%'), findsNothing);
+    expect(find.text('Rata-rata cocok'), findsNothing);
     expect(find.text('Serum A'), findsOneWidget);
     expect(find.text('Serum B'), findsOneWidget);
+    expect(find.text('Tidak Cocok'), findsNWidgets(2));
   });
 
   testWidgets('welcome page opens and advances through the tutorial', (
@@ -117,7 +120,7 @@ void main() {
 ProductHistoryItem _historyItem({
   required String scanId,
   required String productName,
-  required int score,
+  required bool cocok,
 }) {
   return ProductHistoryItem(
     historyId: scanId,
@@ -127,9 +130,9 @@ ProductHistoryItem _historyItem({
       timestamp: '17/11/2026 08:00',
       brand: 'SkinMatch',
       productName: productName,
-      matchScore: score,
-      safetyStatus: ScanAnalysisResult.statusFromScore(score),
-      allergyPotential: AllergyPotential.low,
+      verdict: cocok
+          ? SuitabilityVerdict.cocok
+          : SuitabilityVerdict.tidakCocok,
       comedogenicScale: 'Belum tersedia',
       formulaPh: 'Belum tersedia',
       ingredients: const [],

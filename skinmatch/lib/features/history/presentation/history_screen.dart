@@ -9,9 +9,10 @@ import '../../../core/routing/app_router.dart';
 import '../../../shared/models/skinmatch_models.dart';
 import '../../../shared/widgets/shared_widgets.dart';
 import '../widgets/history_list_item.dart';
+import '../widgets/review_form_sheet.dart';
 
 // ── History Filter ─────────────────────────────────────────────────────────────
-enum HistoryFilter { all, match, notMatch }
+enum HistoryFilter { all, cocok, tidakCocok }
 
 final historyFilterProvider = StateProvider<HistoryFilter>((ref) => HistoryFilter.all);
 
@@ -28,6 +29,7 @@ class HistoryScreen extends ConsumerStatefulWidget {
 
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   final _searchController = TextEditingController();
+  final Map<String, int> _quickRatings = {};
 
   @override
   void dispose() {
@@ -51,11 +53,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     }).toList();
 
     return switch (filter) {
-      HistoryFilter.match => filtered
-          .where((i) => i.scanResult.matchScore >= 80)
+      HistoryFilter.cocok => filtered
+          .where((i) => i.scanResult.verdict.isSuitable)
           .toList(),
-      HistoryFilter.notMatch => filtered
-          .where((i) => i.scanResult.matchScore < 80)
+      HistoryFilter.tidakCocok => filtered
+          .where((i) => !i.scanResult.verdict.isSuitable)
           .toList(),
       HistoryFilter.all => filtered,
     };
@@ -107,13 +109,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final items =
         _filterItems(allItems, filter, _searchController.text);
 
-    // Stats
     final scanned = allItems.length;
-    final matched = allItems.where((i) => i.scanResult.matchScore >= 80).length;
-    final warnings = allItems
-        .where((i) => i.scanResult.safetyStatus != SafetyStatus.lowRisk)
+    final cocok = allItems
+        .where((i) => i.scanResult.verdict.isSuitable)
         .length;
-    final matchPct = scanned > 0 ? (matched / scanned * 100).round() : 0;
+    final tidakCocok = scanned - cocok;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundSoft,
@@ -173,19 +173,19 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             .state = HistoryFilter.all,
                       ),
                       _FilterChip(
-                        label: 'Sangat Cocok',
-                        isSelected: filter == HistoryFilter.match,
+                        label: 'Cocok',
+                        isSelected: filter == HistoryFilter.cocok,
                         onTap: () => ref
                             .read(historyFilterProvider.notifier)
-                            .state = HistoryFilter.match,
+                            .state = HistoryFilter.cocok,
                       ),
                       _FilterChip(
-                        label: 'Perlu Perhatian',
-                        isSelected: filter == HistoryFilter.notMatch,
+                        label: 'Tidak Cocok',
+                        isSelected: filter == HistoryFilter.tidakCocok,
                         variant: _ChipVariant.danger,
                         onTap: () => ref
                             .read(historyFilterProvider.notifier)
-                            .state = HistoryFilter.notMatch,
+                            .state = HistoryFilter.tidakCocok,
                       ),
                     ],
                   ),
@@ -195,9 +195,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 // ── Dermatological Stats Card ──────────────────────────────
                 _StatsCard(
                   scanned: scanned,
-                  matchPct: matchPct,
-                  matched: matched,
-                  warnings: warnings,
+                  cocok: cocok,
+                  tidakCocok: tidakCocok,
                 ),
                 const SizedBox(height: 16),
               ],
@@ -232,8 +231,29 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         onTap: () => context.push(
                           AppRoutes.analysisPath(items[i].scanResult.scanId),
                         ),
-                        onMarkGood: () => _showReviewNotAvailable(context),
-                        onMarkBad: () => _showReviewNotAvailable(context),
+                        onMarkGood: () =>
+                            _showReviewForm(items[i], initialCocok: true),
+                        onMarkBad: () =>
+                            _showReviewForm(items[i], initialCocok: false),
+                        selectedRating: _quickRatings[items[i].historyId],
+                        onRatingSelected: (rating) {
+                          setState(() {
+                            _quickRatings[items[i].historyId] = rating;
+                          });
+                          _showReviewForm(
+                            items[i],
+                            initialCocok:
+                                items[i].review?.confirmedMatch ?? true,
+                            initialRating: rating,
+                            initialComment: items[i].review?.userNotes ?? '',
+                          );
+                        },
+                        onEditReview: () => _showReviewForm(
+                          items[i],
+                          initialCocok: items[i].review?.confirmedMatch ?? true,
+                          initialRating: items[i].review?.rating.round(),
+                          initialComment: items[i].review?.userNotes ?? '',
+                        ),
                       ),
                     ),
                   ),
@@ -243,10 +263,82 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 
-  void _showReviewNotAvailable(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fitur ulasan belum tersedia di server.')),
+  Future<void> _showReviewForm(
+    ProductHistoryItem item, {
+    required bool initialCocok,
+    int? initialRating,
+    String initialComment = '',
+  }) async {
+    await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ReviewFormSheet(
+        item: item,
+        initialCocok: initialCocok,
+        initialRating: initialRating ?? _quickRatings[item.historyId],
+        initialComment: initialComment,
+        onSubmit: (rating, cocok, comment) => _submitReview(
+          item.scanResult.scanId,
+          rating: rating,
+          cocok: cocok,
+          comment: comment,
+        ),
+        onDelete: item.review == null
+            ? null
+            : () => _deleteReview(item.scanResult.scanId),
+      ),
     );
+  }
+
+  Future<bool> _submitReview(
+    String scanId, {
+    required int rating,
+    required bool cocok,
+    required String comment,
+  }) async {
+    try {
+      await ref
+          .read(apiClientProvider)
+          .saveScanReview(
+            scanId: scanId,
+            rating: rating,
+            cocok: cocok,
+            comment: comment,
+          );
+      if (!mounted) return false;
+      ref.invalidate(scanHistoryProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ulasan berhasil disimpan.')),
+      );
+      return true;
+    } on ApiException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.message)));
+      }
+      return false;
+    }
+  }
+
+  Future<bool> _deleteReview(String scanId) async {
+    try {
+      await ref.read(apiClientProvider).deleteScanReview(scanId: scanId);
+      if (!mounted) return false;
+      _quickRatings.remove(scanId);
+      ref.invalidate(scanHistoryProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ulasan berhasil dihapus.')),
+      );
+      return true;
+    } on ApiException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.message)));
+      }
+      return false;
+    }
   }
 }
 
@@ -255,15 +347,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 class _StatsCard extends StatelessWidget {
   const _StatsCard({
     required this.scanned,
-    required this.matchPct,
-    required this.matched,
-    required this.warnings,
+    required this.cocok,
+    required this.tidakCocok,
   });
 
   final int scanned;
-  final int matchPct;
-  final int matched;
-  final int warnings;
+  final int cocok;
+  final int tidakCocok;
 
   @override
   Widget build(BuildContext context) {
@@ -282,34 +372,26 @@ class _StatsCard extends StatelessWidget {
           Expanded(
             child: _StatItem(
               value: '$scanned',
-              label: 'Dipindai\n(30 hari)',
+              label: 'Dipindai',
               icon: LucideIcons.scan_line,
             ),
           ),
           _VerticalDivider(),
           Expanded(
             child: _StatItem(
-              value: '$matchPct%',
-              label: 'Sesuai\nProfil',
-              icon: LucideIcons.percent,
-            ),
-          ),
-          _VerticalDivider(),
-          Expanded(
-            child: _StatItem(
-              value: '$matched',
-              label: 'Cocok\nAman',
-              icon: LucideIcons.shield_check,
+              value: '$cocok',
+              label: 'Cocok',
+              icon: Icons.check_circle_outline,
               color: AppColors.primarySage,
             ),
           ),
           _VerticalDivider(),
           Expanded(
             child: _StatItem(
-              value: '$warnings',
-              label: 'Ada\nPeringatan',
-              icon: LucideIcons.triangle_alert,
-              color: AppColors.statusWarning,
+              value: '$tidakCocok',
+              label: 'Tidak Cocok',
+              icon: Icons.cancel_outlined,
+              color: AppColors.statusDanger,
             ),
           ),
         ],

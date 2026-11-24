@@ -26,3 +26,4 @@ class Scan(Base):
     # Relationships
     user = relationship("User", back_populates="scans")
     product = relationship("Product", back_populates="scans")
+    review = relationship("Review", back_populates="scan", uselist=False)

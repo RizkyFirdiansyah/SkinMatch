@@ -270,13 +270,39 @@ class ApiClient {
     }).toList();
   }
 
+  Future<void> deleteScanReview({required String scanId}) async {
+    await _request(
+      'DELETE',
+      '/api/scans/$scanId/review',
+      authenticated: true,
+    );
+  }
+
   ProductHistoryItem _historyItem(Map<String, dynamic> scan) {
     final id = scan['scan_id']?.toString();
     if (id == null) {
       throw const ApiException('ID scan tidak ditemukan pada riwayat.');
     }
-    final result = scan['result']?.toString() ?? 'Tidak diketahui';
-    final score = _score(scan['confidence'], result);
+    ProductReview? review;
+    final rawReview = scan['review'];
+    if (rawReview != null) {
+      if (rawReview is! Map<String, dynamic>) {
+        throw const ApiException('Data ulasan dari server tidak valid.');
+      }
+      final rating = rawReview['rating'];
+      final verdict = rawReview['verdict'];
+      final reviewedAt = rawReview['reviewed_at'];
+      if (rating is! num || verdict is! String || reviewedAt is! String) {
+        throw const ApiException('Data ulasan dari server tidak valid.');
+      }
+      review = ProductReview(
+        rating: rating.toDouble(),
+        userNotes: rawReview['comment']?.toString() ?? '',
+        confirmedMatch: verdict == 'Cocok',
+        reviewedAt: reviewedAt,
+      );
+    }
+    final result = _suitabilityVerdict(scan['result']);
     final timestamp = scan['timestamp']?.toString() ?? '';
     final resultModel = ScanAnalysisResult(
       scanId: id,
@@ -285,19 +311,40 @@ class ApiClient {
       brand: scan['brand']?.toString() ?? 'SkinMatch',
       productName: scan['product_name']?.toString() ?? 'Hasil pindai #$id',
       imageUrl: _absoluteUrl(scan['thumbnail_url']?.toString()),
-      matchScore: score,
-      safetyStatus: ScanAnalysisResult.statusFromScore(score),
-      allergyPotential: _allergyPotential(score),
+      verdict: result,
       comedogenicScale: 'Belum tersedia',
       formulaPh: 'Belum tersedia',
-      routineRecommendation: result,
+      routineRecommendation: result.label,
       ingredients: const [],
     );
     return ProductHistoryItem(
       historyId: id,
       scanResult: resultModel,
-      trialStatus: TrialStatus.unreviewed,
+      trialStatus: review == null
+          ? TrialStatus.unreviewed
+          : review.confirmedMatch
+          ? TrialStatus.completedSuccess
+          : TrialStatus.triggeredBreakout,
       aiFeedbackApplied: false,
+      review: review,
+    );
+  }
+
+  Future<void> saveScanReview({
+    required String scanId,
+    required int rating,
+    required bool cocok,
+    required String comment,
+  }) async {
+    await _request(
+      'PUT',
+      '/api/scans/$scanId/review',
+      authenticated: true,
+      body: {
+        'rating': rating,
+        'verdict': cocok ? 'Cocok' : 'Tidak Cocok',
+        'comment': comment.trim().isEmpty ? null : comment.trim(),
+      },
     );
   }
 
@@ -365,8 +412,7 @@ class ApiClient {
       );
     }
 
-    final result = classification['result']?.toString() ?? 'Tidak diketahui';
-    final score = _score(classification['confidence'], result);
+    final result = _suitabilityVerdict(classification['result']);
     final warnings = classification['warnings'];
     return ScanAnalysisResult(
       scanId: data['scan_id']?.toString() ?? scanId,
@@ -375,9 +421,7 @@ class ApiClient {
       brand: 'SkinMatch',
       productName: 'Hasil pindai #$scanId',
       imageUrl: _absoluteUrl(data['image_url']?.toString()),
-      matchScore: score,
-      safetyStatus: ScanAnalysisResult.statusFromScore(score),
-      allergyPotential: _allergyPotential(score),
+      verdict: result,
       comedogenicScale: 'Belum tersedia',
       formulaPh: 'Belum tersedia',
       keyWarning: warnings is List && warnings.isNotEmpty
@@ -386,26 +430,19 @@ class ApiClient {
       routineRecommendation:
           classification['recommendations']?.toString() ??
           classification['explanation']?.toString() ??
-          'Hasil klasifikasi: $result.',
+          'Hasil klasifikasi: ${result.label}.',
       ingredients: ingredients,
     );
   }
 
-  int _score(dynamic confidence, String result) {
-    if (confidence is! num) {
-      throw const ApiException('Nilai kecocokan hasil scan tidak valid.');
-    }
-    final value = confidence.toDouble();
-    final clamped = value.clamp(0, 100).toDouble();
-    final notSuitable = result.toLowerCase().contains('tidak cocok');
-    return (notSuitable ? 100 - clamped : clamped).round();
-  }
-
-  AllergyPotential _allergyPotential(int score) {
-    if (score >= 90) return AllergyPotential.veryLow;
-    if (score >= 80) return AllergyPotential.low;
-    if (score >= 60) return AllergyPotential.medium;
-    return AllergyPotential.high;
+  SuitabilityVerdict _suitabilityVerdict(dynamic value) {
+    return switch (value?.toString().trim().toLowerCase()) {
+      'cocok' => SuitabilityVerdict.cocok,
+      'tidak cocok' => SuitabilityVerdict.tidakCocok,
+      _ => throw const ApiException(
+        'Hasil kecocokan produk dari server tidak valid.',
+      ),
+    };
   }
 
   String _formatTimestamp(String value) {

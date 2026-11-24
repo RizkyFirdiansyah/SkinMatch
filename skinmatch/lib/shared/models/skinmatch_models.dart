@@ -167,17 +167,15 @@ class IngredientItem {
 
 // ── Scan Result ───────────────────────────────────────────────────────────────
 
-enum SafetyStatus {
-  lowRisk('LOW_RISK', 'Aman Digunakan'),
-  moderateRisk('MODERATE_RISK', 'Perlu Uji Patch'),
-  highRisk('HIGH_RISK', 'Tidak Disarankan');
+enum SuitabilityVerdict {
+  cocok('Cocok'),
+  tidakCocok('Tidak Cocok');
 
-  const SafetyStatus(this.code, this.label);
-  final String code;
+  const SuitabilityVerdict(this.label);
   final String label;
-}
 
-enum AllergyPotential { veryLow, low, medium, high }
+  bool get isSuitable => this == SuitabilityVerdict.cocok;
+}
 
 class ScanAnalysisResult {
   const ScanAnalysisResult({
@@ -186,9 +184,7 @@ class ScanAnalysisResult {
     required this.timestamp,
     required this.brand,
     required this.productName,
-    required this.matchScore,
-    required this.safetyStatus,
-    required this.allergyPotential,
+    required this.verdict,
     required this.comedogenicScale,
     required this.formulaPh,
     required this.ingredients,
@@ -203,23 +199,14 @@ class ScanAnalysisResult {
   final String timestamp;
   final String brand;
   final String productName;
+  final SuitabilityVerdict verdict;
   final String? volume;
   final String? imageUrl;
-  final int matchScore; // 0–100
-  final SafetyStatus safetyStatus;
-  final AllergyPotential allergyPotential;
   final String comedogenicScale;
   final String formulaPh;
   final String? keyWarning;
   final String routineRecommendation;
   final List<IngredientItem> ingredients;
-
-  /// PRD Business Rule: derive SafetyStatus from matchScore
-  static SafetyStatus statusFromScore(int score) {
-    if (score >= 80) return SafetyStatus.lowRisk;
-    if (score >= 60) return SafetyStatus.moderateRisk;
-    return SafetyStatus.highRisk;
-  }
 }
 
 // ── History & Review ──────────────────────────────────────────────────────────

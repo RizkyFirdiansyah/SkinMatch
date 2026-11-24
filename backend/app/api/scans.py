@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
+from app.models.review import Review, VerdictEnum
 from app.models.scan import Scan
+from app.schemas.review import ScanReviewRequest
 from app.schemas.scan import ScanResponse, ScanListResponse
 import os
 import uuid
@@ -246,9 +248,13 @@ def get_scans(
     - Sorted by newest first
     """
     
-    scans = db.query(Scan).filter(
-        Scan.user_id == current_user.id
-    ).order_by(Scan.created_at.desc()).all()
+    scans = (
+        db.query(Scan)
+        .options(joinedload(Scan.review))
+        .filter(Scan.user_id == current_user.id)
+        .order_by(Scan.created_at.desc())
+        .all()
+    )
     
     return {
         "status": "success",
@@ -261,7 +267,17 @@ def get_scans(
                     "brand": None,
                     "result": scan.classification_result,
                     "confidence": scan.confidence,
-                    "has_review": False,  # Future: check dari review table
+                    "has_review": scan.review is not None,
+                    "review": (
+                        {
+                            "rating": scan.review.rating,
+                            "verdict": scan.review.verdict.value,
+                            "comment": scan.review.comment,
+                            "reviewed_at": scan.review.created_at.isoformat(),
+                        }
+                        if scan.review is not None
+                        else None
+                    ),
                     "thumbnail_url": f"/{scan.image_path}"
                 }
                 for scan in scans
@@ -270,6 +286,97 @@ def get_scans(
                 "total_items": len(scans)
             }
         }
+    }
+
+@router.put("/{scan_id}/review")
+def save_scan_review(
+    scan_id: int,
+    review_data: ScanReviewRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    scan = (
+        db.query(Scan)
+        .filter(Scan.id == scan_id, Scan.user_id == current_user.id)
+        .with_for_update()
+        .first()
+    )
+    if not scan:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan tidak ditemukan",
+        )
+
+    review = db.query(Review).filter(Review.scan_id == scan.id).first()
+    verdict = (
+        VerdictEnum.COCOK
+        if review_data.verdict == VerdictEnum.COCOK.value
+        else VerdictEnum.TIDAK_COCOK
+    )
+    comment = review_data.comment.strip() if review_data.comment else None
+    if review is None:
+        review = Review(
+            user_id=current_user.id,
+            product_id=scan.product_id,
+            scan_id=scan.id,
+            rating=review_data.rating,
+            verdict=verdict,
+            comment=comment or None,
+        )
+        db.add(review)
+    else:
+        review.rating = review_data.rating
+        review.verdict = verdict
+        review.comment = comment or None
+
+    db.commit()
+    db.refresh(review)
+
+    return {
+        "status": "success",
+        "data": {
+            "scan_id": scan.id,
+            "review_id": review.id,
+            "rating": review.rating,
+            "verdict": review.verdict.value,
+            "comment": review.comment,
+            "reviewed_at": review.created_at.isoformat(),
+        },
+    }
+
+@router.delete("/{scan_id}/review")
+def delete_scan_review(
+    scan_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    scan = (
+        db.query(Scan)
+        .filter(Scan.id == scan_id, Scan.user_id == current_user.id)
+        .with_for_update()
+        .first()
+    )
+    if not scan:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan tidak ditemukan",
+        )
+
+    review = db.query(Review).filter(Review.scan_id == scan.id).first()
+    if review is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ulasan tidak ditemukan",
+        )
+
+    db.delete(review)
+    db.commit()
+    return {
+        "status": "success",
+        "data": {
+            "scan_id": scan.id,
+            "deleted": True,
+        },
     }
 
 @router.get("/{scan_id}", response_model=ScanResponse)

@@ -389,14 +389,10 @@ class _HistoryOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final averageMatch = items.isEmpty
-        ? 0
-        : (items.fold<int>(
-                    0,
-                    (total, item) => total + item.scanResult.matchScore,
-                  ) /
-                  items.length)
-              .round();
+    final cocokCount = items
+        .where((item) => item.scanResult.verdict.isSuitable)
+        .length;
+    final tidakCocokCount = items.length - cocokCount;
     final recentItems = items.take(3).toList();
 
     return Column(
@@ -407,12 +403,13 @@ class _HistoryOverview extends StatelessWidget {
             Expanded(
               child: _StatCard(value: '${items.length}', label: 'Dipindai'),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             Expanded(
-              child: _StatCard(
-                value: '$averageMatch%',
-                label: 'Rata-rata cocok',
-              ),
+              child: _StatCard(value: '$cocokCount', label: 'Cocok'),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _StatCard(value: '$tidakCocokCount', label: 'Tidak Cocok'),
             ),
           ],
         ),
@@ -500,18 +497,6 @@ class _RecentScanTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final score = item.scanResult.matchScore;
-    final scoreColor = score >= 80
-        ? AppColors.statusSafe
-        : score >= 60
-        ? AppColors.statusWarningDark
-        : AppColors.statusDanger;
-    final scoreBackground = score >= 80
-        ? AppColors.statusSafeBg
-        : score >= 60
-        ? AppColors.statusWarningBg
-        : AppColors.statusDangerBg;
-
     return Material(
       color: AppColors.cardSurface,
       borderRadius: BorderRadius.circular(18),
@@ -575,15 +560,12 @@ class _RecentScanTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                decoration: BoxDecoration(
-                  color: scoreBackground,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  '$score%',
-                  style: AppTypography.labelSmall.copyWith(color: scoreColor),
+              Text(
+                item.scanResult.verdict.label,
+                style: AppTypography.labelSmall.copyWith(
+                  color: item.scanResult.verdict.isSuitable
+                      ? AppColors.statusSafe
+                      : AppColors.statusDanger,
                 ),
               ),
             ],

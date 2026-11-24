@@ -77,6 +77,8 @@ Buka http://localhost:8000/docs untuk Swagger UI.
 - `POST /api/scans` - Upload & analyze product image (require auth)
 - `GET /api/scans` - Get scan history (require auth)
 - `GET /api/scans/{scan_id}` - Get scan detail (require auth)
+- `PUT /api/scans/{scan_id}/review` - Create or update a review for a scan (require auth)
+- `DELETE /api/scans/{scan_id}/review` - Delete a review for a scan (require auth)
 
 ### Utility
 - `GET /health` - Health check (termasuk cek koneksi database)
@@ -138,6 +140,17 @@ curl -X POST http://localhost:8000/api/scans \
   -H "Authorization: Bearer <token>" \
   -F "image=@produk.jpg"
 ```
+
+### Submit or Edit a Scan Review
+
+```bash
+curl -X PUT http://localhost:8000/api/scans/1/review \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"rating":5,"verdict":"Cocok","comment":"Kulit terasa lebih nyaman."}'
+```
+
+`rating` must be between 1 and 5. `verdict` is `Cocok` or `Tidak Cocok`, and `comment` is optional (maximum 500 characters). Each scan has at most one review; submitting again updates it.
 
 ## Nilai `skin_type`
 

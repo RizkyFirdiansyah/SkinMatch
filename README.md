@@ -570,7 +570,7 @@ lib/
 │   │   └── widgets/              camera_overlay_painter.dart
 │   ├── analysis/                 Hasil klasifikasi ingredients (merah/hijau)
 │   │   ├── presentation/         result_screen.dart
-│   │   └── widgets/              ingredient_status_card.dart, circular_score.dart
+│   │   └── widgets/              ingredient_status_card.dart
 │   └── history/                  Dasbor dan riwayat pemindaian
 │       ├── presentation/         history_screen.dart
 │       └── widgets/              history_list_item.dart

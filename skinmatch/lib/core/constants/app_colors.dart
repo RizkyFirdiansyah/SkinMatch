@@ -13,16 +13,16 @@ abstract class AppColors {
   static const Color cardSurface = Color(0xFFFFFFFF);
 
   // ── Status / Semantic ──────────────────────────────────────────────────────
-  /// Match Score ≥ 80% — Aman / Low Risk
+  /// Hasil Cocok
   static const Color statusSafe = Color(0xFF4E7D5B);
   static const Color statusSafeBg = Color(0xFFE8F0EA);
 
-  /// Match Score 60–79% — Perlu Patch Test / Moderate
+  /// Peringatan tambahan
   static const Color statusWarning = Color(0xFFD97706);
   static const Color statusWarningDark = Color(0xFFB45309);
   static const Color statusWarningBg = Color(0xFFFEF3C7);
 
-  /// Match Score < 60% — Tidak Disarankan / High Risk
+  /// Hasil Tidak Cocok
   static const Color statusDanger = Color(0xFFDC2626);
   static const Color statusDangerBg = Color(0xFFFEE2E2);
 

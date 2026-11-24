@@ -314,7 +314,8 @@ class _TutorialDialogState extends State<_TutorialDialog> {
     (
       title: 'Baca hasilnya',
       description:
-          'Lihat match score, bahan kunci, dan bahan yang perlu diwaspadai. '
+          'Lihat apakah produk Cocok atau Tidak Cocok, serta bahan kunci '
+          'dan bahan yang perlu diwaspadai. '
           'Simpan produk ke riwayat untuk membandingkannya nanti.',
       icon: Icons.insights_rounded,
     ),
