@@ -19,9 +19,7 @@ router = APIRouter(prefix="/api/saved-products", tags=["Saved Products"])
 
 
 def _scan_name(scan: Scan) -> str:
-    # ponytail: nama produk belum ada kolomnya; ganti ke scan.product_name
-    # begitu Fitur 3 (input nama produk) merge.
-    return f"Hasil pindai #{scan.id}"
+    return scan.product_name or f"Hasil pindai #{scan.id}"
 
 
 def _scan_of_user(scan_id: int, user: User, db: Session) -> Scan:

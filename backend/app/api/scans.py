@@ -5,7 +5,7 @@ from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.scan import Scan
 from app.models.saved_product import SavedProduct
-from app.schemas.scan import ScanResponse, ScanListResponse
+from app.schemas.scan import ScanResponse, ScanListResponse, ScanNameUpdate
 import os
 import uuid
 import joblib
@@ -220,6 +220,7 @@ async def create_scan(
             "user_id": current_user.id,
             "timestamp": new_scan.created_at.isoformat(),
             "image_url": f"/{image_path}",
+            "product_name": new_scan.product_name,
             "ocr_result": {
                 "raw_text": raw_text,
                 "confidence": ocr_confidence,
@@ -265,7 +266,7 @@ def get_scans(
                 {
                     "scan_id": scan.id,
                     "timestamp": scan.created_at.isoformat(),
-                    "product_name": "Unknown Product",  # Future: extract dari product catalog
+                    "product_name": scan.product_name or f"Hasil pindai #{scan.id}",
                     "brand": None,
                     "result": scan.classification_result,
                     "confidence": scan.confidence,
@@ -319,6 +320,7 @@ def get_scan_detail(
             "user_id": scan.user_id,
             "timestamp": scan.created_at.isoformat(),
             "image_url": f"/{scan.image_path}",
+            "product_name": scan.product_name,
             "is_saved": is_saved,
             "ocr_result": {
                 "raw_text": scan.ocr_raw_text,
@@ -330,5 +332,40 @@ def get_scan_detail(
                 "confidence": scan.confidence,
                 **classification_details
             }
+        }
+    }
+
+@router.patch("/{scan_id}", response_model=ScanResponse)
+def update_scan_product_name(
+    scan_id: int,
+    payload: ScanNameUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Beri atau ubah nama produk pada scan milik sendiri
+    - Nama bebas, boleh sama antar scan
+    """
+    scan = db.query(Scan).filter(
+        Scan.id == scan_id,
+        Scan.user_id == current_user.id
+    ).first()
+
+    if not scan:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan tidak ditemukan"
+        )
+
+    scan.product_name = payload.product_name
+    db.commit()
+    db.refresh(scan)
+
+    return {
+        "status": "success",
+        "message": "Nama produk diperbarui",
+        "data": {
+            "scan_id": scan.id,
+            "product_name": scan.product_name
         }
     }
