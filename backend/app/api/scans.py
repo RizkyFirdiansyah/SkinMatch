@@ -15,6 +15,11 @@ import threading
 from pathlib import Path
 from app.skinmatch_ml.ocr.engine import create_ocr, extract_text
 from app.skinmatch_ml.text.extract import LexiconMatcher
+from app.skinmatch_ml.text.ingredient_safety import (
+    analyze_ingredients,
+    build_warnings,
+    load_rules,
+)
 from app.skinmatch_ml.classify.model import predict_scores
 
 router = APIRouter(prefix="/api/scans", tags=["Scans"])
@@ -25,6 +30,7 @@ _ml_state = {
     "matcher": None,
     "clf": None,
     "labels_config": None,
+    "ingredient_rules": None,
     "initialized": False
 }
 _lock = threading.Lock()
@@ -60,7 +66,10 @@ def _ensure_initialized():
         _ml_state["clf"] = joblib.load("models/model.joblib")
         with open("models/labels.json", "r", encoding="utf-8") as f:
             _ml_state["labels_config"] = json.load(f)
-            
+
+        # Load tabel aturan keamanan per bahan
+        _ml_state["ingredient_rules"] = load_rules("data/ingredient_rules.json")
+
         _ml_state["initialized"] = True
 
 MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB
@@ -180,19 +189,30 @@ async def create_scan(
     
     explanation = f"Produk ini {'cocok' if is_suitable else 'kurang cocok'} untuk kulit {current_user.skin_type.value} Anda berdasarkan analisis bahan aktif."
     
-    safe_list = [{"name": ing, "function": "Active / Ingredient", "risk_level": "safe"} for ing in extracted_ingredients]
-    ingredients_analysis = {
-        "safe": safe_list,
-        "risky": [],
-        "unknown": []
-    }
+    ingredients_analysis = analyze_ingredients(
+        extracted_ingredients,
+        current_user.skin_type.value,
+        _ml_state["ingredient_rules"],
+    )
     warnings = [] if is_suitable else ["Komposisi bahan kurang selaras dengan tipe kulit Anda."]
-    
+    warnings += build_warnings(ingredients_analysis["risky"])
+
+    risky_names = [item["name"] for item in ingredients_analysis["risky"]]
+    if is_suitable and risky_names:
+        recommendations = (
+            "Produk ini cocok untuk tipe kulit Anda, tetapi ada bahan yang perlu "
+            f"diperhatikan ({', '.join(risky_names[:3])}). Uji dulu di area kecil."
+        )
+    elif is_suitable:
+        recommendations = "Produk ini aman digunakan"
+    else:
+        recommendations = "Disarankan konsultasi atau pilih produk lain yang lebih sesuai."
+
     classification_details = {
         "explanation": explanation,
         "ingredients_analysis": ingredients_analysis,
         "warnings": warnings,
-        "recommendations": "Produk ini aman digunakan" if is_suitable else "Disarankan konsultasi atau pilih produk lain yang lebih sesuai."
+        "recommendations": recommendations
     }
 
     # 5. Save to database
