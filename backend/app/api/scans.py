@@ -4,6 +4,7 @@ from app.database import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.scan import Scan
+from app.models.saved_product import SavedProduct
 from app.schemas.scan import ScanResponse, ScanListResponse
 import os
 import uuid
@@ -249,7 +250,14 @@ def get_scans(
     scans = db.query(Scan).filter(
         Scan.user_id == current_user.id
     ).order_by(Scan.created_at.desc()).all()
-    
+
+    saved_ids = {
+        row.scan_id
+        for row in db.query(SavedProduct.scan_id).filter(
+            SavedProduct.user_id == current_user.id
+        ).all()
+    }
+
     return {
         "status": "success",
         "data": {
@@ -262,6 +270,7 @@ def get_scans(
                     "result": scan.classification_result,
                     "confidence": scan.confidence,
                     "has_review": False,  # Future: check dari review table
+                    "is_saved": scan.id in saved_ids,
                     "thumbnail_url": f"/{scan.image_path}"
                 }
                 for scan in scans
@@ -296,6 +305,13 @@ def get_scan_detail(
 
     classification_details = scan.classification_details or {}
 
+    is_saved = (
+        db.query(SavedProduct.id)
+        .filter(SavedProduct.user_id == current_user.id, SavedProduct.scan_id == scan.id)
+        .first()
+        is not None
+    )
+
     return {
         "status": "success",
         "data": {
@@ -303,6 +319,7 @@ def get_scan_detail(
             "user_id": scan.user_id,
             "timestamp": scan.created_at.isoformat(),
             "image_url": f"/{scan.image_path}",
+            "is_saved": is_saved,
             "ocr_result": {
                 "raw_text": scan.ocr_raw_text,
                 "confidence": scan.ocr_confidence

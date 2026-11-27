@@ -25,6 +25,7 @@ from app.models.scan import Scan
 from app.models.category import Category
 from app.models.product import Product
 from app.models.review import Review
+from app.models.saved_product import SavedProduct
 
 # Set target metadata
 target_metadata = Base.metadata
