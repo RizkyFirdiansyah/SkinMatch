@@ -1,55 +1,92 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_colors.dart';
 
-// Custom painter untuk overlay frame kamera 4:3
-// Menggambar corner brackets sebagai target area pindai INCI
+/// Overlay frame 4:3 dengan corner bracket di atas preview kamera.
+///
+/// Semua ukuran dihitung relatif terhadap kotak yang diberikan, sehingga
+/// painter ini aman dipakai di dalam card preview (bukan hanya fullscreen).
 class CameraOverlayPainter extends CustomPainter {
-  CameraOverlayPainter();
+  const CameraOverlayPainter({
+    this.frameAspectRatio = 4 / 3,
+    this.horizontalInsetFactor = 0.07,
+  });
+
+  /// Rasio lebar:tinggi area pindai.
+  final double frameAspectRatio;
+
+  /// Jarak kiri/kanan frame dari tepi widget (0.07 = 7%).
+  final double horizontalInsetFactor;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double frameW = size.width * 0.80;
-    final double frameH = frameW * (4 / 3);
-    final double left = (size.width - frameW) / 2;
-    final double top = (size.height - frameH) / 2 - 40;
-    final double right = left + frameW;
-    final double bottom = top + frameH;
-    const double cornerLength = 28;
-    const double cornerRadius = 4;
-    const double strokeWidth = 2.5;
+    if (size.width <= 0 || size.height <= 0) return;
 
-    final paint = Paint()
+    final maxFrameWidth = size.width * (1 - horizontalInsetFactor * 2);
+    final maxFrameHeight = size.height * 0.64;
+    final frameHeight =
+        math.min(maxFrameWidth / frameAspectRatio, maxFrameHeight);
+    final frameWidth = frameHeight * frameAspectRatio;
+
+    final rect = Rect.fromLTWH(
+      (size.width - frameWidth) / 2,
+      (size.height - frameHeight) / 2,
+      frameWidth,
+      frameHeight,
+    );
+
+    // Redupkan area di luar frame.
+    final dimPaint = Paint()..color = Colors.black.withValues(alpha: 0.32);
+    final dimPath = Path()
+      ..addRect(Offset.zero & size)
+      ..addRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(12)),
+      )
+      ..fillType = PathFillType.evenOdd;
+    canvas.drawPath(dimPath, dimPaint);
+
+    // Garis bantu horizontal tipis di tengah frame.
+    final scanLinePaint = Paint()
+      ..color = AppColors.primarySage.withValues(alpha: 0.5)
+      ..strokeWidth = 1.5;
+    canvas.drawLine(
+      Offset(rect.left, rect.center.dy),
+      Offset(rect.right, rect.center.dy),
+      scanLinePaint,
+    );
+
+    final cornerPaint = Paint()
       ..color = AppColors.primarySage
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = 3
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    // Dim overlay outside the frame
-    final dimPaint = Paint()..color = Colors.black.withValues(alpha: 0.45);
-    final path = Path()
-      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
-      ..addRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromLTRB(left, top, right, bottom),
-          const Radius.circular(cornerRadius),
-        ),
-      )
-      ..fillType = PathFillType.evenOdd;
-    canvas.drawPath(path, dimPaint);
+    final cornerLength =
+        math.min(28.0, math.min(rect.width, rect.height) * 0.18);
 
-    // Draw corner brackets
-    _drawCorner(canvas, paint, left, top, cornerLength, 1, 1);
-    _drawCorner(canvas, paint, right, top, cornerLength, -1, 1);
-    _drawCorner(canvas, paint, left, bottom, cornerLength, 1, -1);
-    _drawCorner(canvas, paint, right, bottom, cornerLength, -1, -1);
+    _drawCorner(canvas, cornerPaint, rect.topLeft, cornerLength, 1, 1);
+    _drawCorner(canvas, cornerPaint, rect.topRight, cornerLength, -1, 1);
+    _drawCorner(canvas, cornerPaint, rect.bottomLeft, cornerLength, 1, -1);
+    _drawCorner(canvas, cornerPaint, rect.bottomRight, cornerLength, -1, -1);
   }
 
-  void _drawCorner(Canvas canvas, Paint paint, double x, double y,
-      double len, double dx, double dy) {
-    canvas.drawLine(Offset(x, y), Offset(x + dx * len, y), paint);
-    canvas.drawLine(Offset(x, y), Offset(x, y + dy * len), paint);
+  void _drawCorner(
+    Canvas canvas,
+    Paint paint,
+    Offset origin,
+    double length,
+    double dx,
+    double dy,
+  ) {
+    canvas.drawLine(origin, origin.translate(dx * length, 0), paint);
+    canvas.drawLine(origin, origin.translate(0, dy * length), paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CameraOverlayPainter oldDelegate) {
+    return oldDelegate.frameAspectRatio != frameAspectRatio ||
+        oldDelegate.horizontalInsetFactor != horizontalInsetFactor;
+  }
 }

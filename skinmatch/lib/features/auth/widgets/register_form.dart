@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/network/api_client.dart';
+import '../../../core/routing/app_router.dart';
 import '../../../core/utils/validators.dart';
 import '../theme/auth_style.dart';
 import 'auth_primary_button.dart';
 import 'auth_text_field.dart';
 
 /// Isi tab "Daftar Akun Baru".
-class RegisterForm extends StatefulWidget {
-  /// Dipanggil saat pendaftaran berhasil (untuk pindah ke tab Masuk).
-  final VoidCallback onRegistered;
-
-  const RegisterForm({super.key, required this.onRegistered});
+class RegisterForm extends ConsumerStatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  ConsumerState<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends ConsumerState<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _idController = TextEditingController();
@@ -53,20 +54,23 @@ class _RegisterFormState extends State<RegisterForm> {
     if (!formOk || !_agree) return;
 
     setState(() => _isLoading = true);
-    // Nanti: ganti dengan panggilan API registrasi ke server.
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Akun berhasil dibuat. Silakan masuk.'),
-        backgroundColor: AuthColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
-    widget.onRegistered();
+    try {
+      await ref.read(apiClientProvider).register(
+        name: _nameController.text.trim(),
+        email: _idController.text.trim(),
+        password: _passwordController.text,
+        confirmPassword: _confirmController.text,
+      );
+      if (mounted) context.go(AppRoutes.profileSetup);
+    } on ApiException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(error.message)));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -85,13 +89,13 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           const SizedBox(height: 14),
           AuthTextField(
-            label: 'Email / No. Handphone *',
-            hint: 'nama@email.com atau 08123456789',
+            label: 'Email *',
+            hint: 'nama@email.com',
             icon: Icons.mail_outline,
             controller: _idController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            validator: Validators.emailOrPhone,
+            validator: Validators.email,
           ),
           const SizedBox(height: 14),
           AuthTextField(

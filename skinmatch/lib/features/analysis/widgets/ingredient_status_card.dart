@@ -34,6 +34,11 @@ class IngredientStatusCard extends StatelessWidget {
           AppColors.tagDangerText,
           LucideIcons.circle_minus,
         ),
+      IngredientSafetyCategory.unknown => (
+          AppColors.backgroundClean,
+          AppColors.textSecondary,
+          LucideIcons.circle_question_mark,
+        ),
     };
 
     final categoryLabel = switch (ingredient.category) {
@@ -41,6 +46,7 @@ class IngredientStatusCard extends StatelessWidget {
       IngredientSafetyCategory.safeCarrier => 'AMAN',
       IngredientSafetyCategory.warning => 'PERHATIAN',
       IngredientSafetyCategory.irritant => 'IRITAN',
+      IngredientSafetyCategory.unknown => 'BELUM DIKETAHUI',
     };
 
     return Container(

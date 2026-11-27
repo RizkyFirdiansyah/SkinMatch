@@ -1,0 +1,3350 @@
+{
+  "_meta": {
+    "version": 1,
+    "description": "Aturan tag keamanan per bahan (Aman vs Perhatian) berbasis tipe kulit user.",
+    "risk_skin_types_values": [
+      "Normal",
+      "Kering",
+      "Berminyak",
+      "Sensitif",
+      "ALL"
+    ],
+    "empty_risk_skin_types": "Aman untuk semua tipe kulit.",
+    "note": "Aturan ini bersifat edukatif, bukan diagnosis medis. Reaksi tiap orang berbeda.",
+    "sources": [
+      "EU Regulation 1223/2009 Annex III, V, VI",
+      "SCCS Opinions (Fragrance Allergens 2012, Methylisothiazolinone, Benzophenone-3 2022)",
+      "ASEAN Cosmetic Directive Annex II/III/VI (acuan BPOM)",
+      "CosDNA comedogenic ratings",
+      "INCIDecoder & Paula's Choice ingredient dictionary"
+    ]
+  },
+  "rules": {
+    "+fragrance": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "1,2-hexanediol": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "1,3 propanediol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "1,3-butylene glycol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "100% cocos nucifera (coconut) oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "100% l-ascorbic acid powder": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "2-0-ethyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "2-bromo-2-nitropropane-1": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "2-bromo-2-nitropropane-1,3-diol": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "2-ethylhexyl palmitate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "2-o-ethyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "2-phenoxyethanol": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "2.5% benzoyl peroxide": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "3-0-ethyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "3-diol 2-bromo-2-nitropropane-1": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "3-o-cetyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "3-o-ethyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "3-o-ethyl-l-ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "5% lactic acid": {
+      "function": "AHA eksfolian (lactic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Eksfolian AHA yang lebih lembut dari glycolic, namun tetap dapat memicu perih pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "a-bisabolol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "acetyl mandelic acid": {
+      "function": "AHA eksfolian (mandelic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA molekul besar dan lebih lembut, tetapi tetap dapat mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "acetylated hydrogenated lanolin": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "acetylated lanolin": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "acetylated lanolin alcohol": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "adapalene": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "adapalene 0.1%": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "adapalene usp 0.1%": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "adenosine": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "african shea butter": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "alcohol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "alcohol denat": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "alcohol denat.": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "alcohol denatured": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "allantoin": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aloe barbadensis": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aloe barbadensis (aloe vera) leaf juice": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aloe barbadensis (aloe) leaf extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aloe barbadensis leaf extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aloe barbadensis leaf juice": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "alpha-arbutin": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "alpha-bisabolol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "alpha-isomethyl ionone": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "aminomethyl propanol": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ammonium laureth sulfate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "ammonium lauryl sulfate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "amyl cinnamal": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "anise alcohol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "aqua": {
+      "function": "Pelarut (solvent)",
+      "risk_skin_types": [],
+      "risk_note": "Berfungsi sebagai pelarut dan pembawa bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "arachidyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "argania spinosa kernel oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "arginine": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "aroma": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "aroma oil blend": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "aromatic oils": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "artificial fragrance": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbic acid 2-glucoside": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbic acid ester": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbic acid glucoside": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbic acid polypeptide": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbic acid usp": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbyl glucoside": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ascorbyl palmitate": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "azelaic acid": {
+      "function": "Bahan aktif anti-acne / brightening",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Umumnya ditoleransi baik, tetapi dapat menimbulkan sensasi perih sementara pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "bakuchiol": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "beeswax": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "behenyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "benzoic acid": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "benzophenone-3": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "benzophenone-4": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "benzoyl peroxide": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 10%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 10.0%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 2.5%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 3%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 3.4%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 3.5%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 4%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 5%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 5.5%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzoyl peroxide 7%": {
+      "function": "Bahan aktif anti-acne (benzoyl peroxide)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Efektif membunuh bakteri acne, tetapi sering menyebabkan kekeringan, perih, dan pengelupasan.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "benzyl alcohol": {
+      "function": "Pelarut & pengawet / komponen pewangi",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Berfungsi sebagai pelarut dan pengawet, namun termasuk allergen pewangi EU.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "benzyl benzoate": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "benzyl cinnamate": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "benzyl salicylate": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "bergamot oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "betaine": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "bis (hydroxymethyl) imidazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "bisabolol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "botanical fragrance": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "bronopol": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "butyl stearate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "butylene glycol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "butylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "butylphenyl methylpropional": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "butyrospermum parkii": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "butyrospermum parkii (shea) butter": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "butyrospermum parkii (shea) butter extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "butyrospermum parkii butter": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "c12-15 alkyl benzoate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cajeput (melaleuca minor) essential oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "camellia sinensis (green tea) leaf extract": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "camellia sinensis leaf extract": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "camphor": {
+      "function": "Penenang / counter-irritant",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Menimbulkan sensasi dingin dan pedih; dikenal sebagai iritan pada kulit sensitif.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "camphor bark oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "camphor essential oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "camphor oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "cananga odorata (ylang ylang) flower oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "cananga odorata (ylang ylang) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "cananga odorata flower oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "caprylhydroxamic acid": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "caprylic/capric triglyceride": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "caprylic/capric triglycerides": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "capryloyl salicylic acid": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "caprylyl glycol": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "carbomer": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cellulose gum": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "centella asiatica": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "centella asiatica (gotu kola) extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "centella asiatica (hydrocotyl) extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "centella asiatica extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "centella asiatica leaf extract": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide 3": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide ap": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide eop": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide ng": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide np": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceramide ns": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ceteareth-20": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cetearyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cetearyl olivate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cetyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "chlorphenesin": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "cholesterol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ci 77891": {
+      "function": "Pewarna / pigmen (colorant)",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "INCIDecoder; CosDNA"
+    },
+    "cinnamal": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "cinnamomum camphora (camphor) bark oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "cinnamomum camphora (camphor) leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "cinnamyl alcohol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "citral": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "citric acid": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "citronellol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "citrus aurantium bergamia (bergamot) fruit oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus aurantium bergamia (bergamot) peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus aurantium bergamia fruit oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus aurantium bergamia peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus aurantium dulcis (orange) fruit extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus aurantium dulcis (orange) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus aurantium dulcis (orange) peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus bergamia (bergamot) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus grandis (grapefruit) peel extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus grandis (grapefruit) peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus grandis (grapefruit) seed extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus grandis seed extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus limon (lemon) fruit extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus limon (lemon) peel extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus limon (lemon) peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus limon fruit extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "citrus limon peel oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "citrus limonum (lemon) extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "cocamidopropyl betaine": {
+      "function": "Surfaktan amphoteric (pembersih lembut)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Umumnya lembut, namun sisa amina pada proses produksi bisa memicu alergi kontak pada sebagian orang.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "coco-glucoside": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cocoa seed butter": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocoamidopropyl betaine": {
+      "function": "Surfaktan amphoteric (pembersih lembut)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Umumnya lembut, namun sisa amina pada proses produksi bisa memicu alergi kontak pada sebagian orang.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "coconut oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocos nucifera": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocos nucifera (coconut) fruit oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocos nucifera (coconut) kernel oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocos nucifera (coconut) oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "cocos nucifera oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "coumarin": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "cyclohexasiloxane": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "cyclopentasiloxane": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "d-alpha tocopherol acetate": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "d-gluconolactone": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "d-panthenol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "decyl glucoside": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "dehydroacetic acid": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "dexpanthenol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "diazoldinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "diazolidiniyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "diazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "diazolidnyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "dicaprylyl carbonate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "didazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "dihydroxymethylimidazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "diimidazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "dimethicone": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "dimethicone crosspolymer": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "dipropylene glycol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "disodium edta": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "dl-panthenol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "dmdm hydantoin": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "ethanol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "ethanol 35%": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "ethanol 62%": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "ethyl alcohol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "ethyl alcohol denat": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "ethyl ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ethylhexyl methoxycinnamate": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "ethylhexyl palmitate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "ethylhexylglycerin": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "ethylhexylglycerine": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "ethylparaben": {
+      "function": "Pengawet golongan paraben (rantai pendek)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai pendek masih diizinkan dan umumnya ditoleransi baik; sebagian orang sensitif.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "eucalyptus globulus (eucalyptus) leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "eucalyptus globulus (eucalyptus) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "eucalyptus globulus leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "eucalyptus globulus oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "eucalyptus oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "eugenol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "evernia prunastri": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "farnesol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "ferulic acid": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "geraniol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "geranium essential oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "geranium oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "gluconolactone": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "glucose": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glycerin": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glyceryl caprylate": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "glyceryl stearate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glyceryl stearate citrate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glyceryl stearate se": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glycine": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "glycolic acid": {
+      "function": "AHA eksfolian (glycolic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA dengan molekul terkecil, penetrasi cepat dan potensi iritasi tinggi pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "glycolic acid copolymer": {
+      "function": "AHA eksfolian (glycolic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA dengan molekul terkecil, penetrasi cepat dan potensi iritasi tinggi pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "glycolic acid polymer": {
+      "function": "AHA eksfolian (glycolic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA dengan molekul terkecil, penetrasi cepat dan potensi iritasi tinggi pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "hamamelis virginiana": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "hamamelis virginiana (witch hazel) bark/leaf/twig extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "hamamelis virginiana (witch hazel) extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "hamamelis virginiana (witch hazel) leaf extract": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "hamamelis virginiana (witch hazel) leaf water": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "hamamelis virginiana (witch hazel) water": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "helianthus annuus (sunflower) seed oil": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "helianthus annuus seed oil": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hexyl cinnamal": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "hexylene glycol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hyaluronic acid": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hyaluronic acids": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hydrogenated lecithin": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hydrolyzed hyaluronic acid": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hydrolyzed sodium hyaluronate": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hydroquinone": {
+      "function": "Pemutih kulit (dilarang di kosmetik)",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Dilarang dalam kosmetik ASEAN/BPOM kecuali penggunaan profesional terbatas; risiko okronosis.",
+      "source": "ASEAN Cosmetic Directive Annex II; BPOM"
+    },
+    "hydroquinone 2%": {
+      "function": "Pemutih kulit (dilarang di kosmetik)",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Dilarang dalam kosmetik ASEAN/BPOM kecuali penggunaan profesional terbatas; risiko okronosis.",
+      "source": "ASEAN Cosmetic Directive Annex II; BPOM"
+    },
+    "hydroquinone 2.0%": {
+      "function": "Pemutih kulit (dilarang di kosmetik)",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Dilarang dalam kosmetik ASEAN/BPOM kecuali penggunaan profesional terbatas; risiko okronosis.",
+      "source": "ASEAN Cosmetic Directive Annex II; BPOM"
+    },
+    "hydroquinone usp": {
+      "function": "Pemutih kulit (dilarang di kosmetik)",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Dilarang dalam kosmetik ASEAN/BPOM kecuali penggunaan profesional terbatas; risiko okronosis.",
+      "source": "ASEAN Cosmetic Directive Annex II; BPOM"
+    },
+    "hydroxycitronellal": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "hydroxyethyl urea": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "hydroxyethylcellulose": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "imidazolidinyl urea": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "isobutylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "isododecane": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "isoeugenol": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "isohexadecane": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "isononyl isononanoate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "isopropyl alcohol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "isopropyl isostearate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "isopropyl myristate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "isopropyl palmitate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "isopropylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "kaolin": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "kojic acid": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "kojic acid powder": {
+      "function": "Bahan aktif pencerah / alternatif retinoid",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Profil iritasi lebih rendah, namun kulit sensitif tetap perlu uji toleransi bertahap.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "l (+) lactic acid": {
+      "function": "AHA eksfolian (lactic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Eksfolian AHA yang lebih lembut dari glycolic, namun tetap dapat memicu perih pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "l-ascorbic acid": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "l-mandelic acid": {
+      "function": "AHA eksfolian (mandelic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA molekul besar dan lebih lembut, tetapi tetap dapat mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "l-menthol": {
+      "function": "Penenang / counter-irritant",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Menimbulkan sensasi dingin dan pedih; dikenal sebagai iritan pada kulit sensitif.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "lactic acid": {
+      "function": "AHA eksfolian (lactic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Eksfolian AHA yang lebih lembut dari glycolic, namun tetap dapat memicu perih pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "lanolin": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "lanolin alcohol": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "lanolin oil": {
+      "function": "Emolien lanolin",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Lanolin dapat menyumbat pori dan menjadi allergen kontak pada sebagian orang.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "lauric acid": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "lauryl glucoside": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "lavandula angustifolia (lavender) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "lavandula hybrida oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "lavender oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "lecithin": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "limonene": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "linalool": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "magnesium aluminum silicate": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "magnesium sulfate": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "mandelic acid": {
+      "function": "AHA eksfolian (mandelic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "AHA molekul besar dan lebih lembut, tetapi tetap dapat mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "melaleuca alternifolia (tea tree) leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "melaleuca alternifolia (tea tree) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "melaleuca alternifolia leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "mentha piperita (peppermint) leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "mentha piperita (peppermint) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "mentha piperita oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "menthol": {
+      "function": "Penenang / counter-irritant",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Menimbulkan sensasi dingin dan pedih; dikenal sebagai iritan pada kulit sensitif.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "menthol 0.5%": {
+      "function": "Penenang / counter-irritant",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Menimbulkan sensasi dingin dan pedih; dikenal sebagai iritan pada kulit sensitif.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "menthol crystals": {
+      "function": "Penenang / counter-irritant",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Menimbulkan sensasi dingin dan pedih; dikenal sebagai iritan pada kulit sensitif.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "menthol lactate": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "menthoxypropanediol": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "methanol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "methyl 2-octynoate": {
+      "function": "Komponen pewangi (allergen EU)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Termasuk 26 allergen pewangi yang wajib dilabeli di EU dan sering memicu alergi kontak.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "methyl/propylparabens": {
+      "function": "Pengawet golongan paraben (rantai pendek)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai pendek masih diizinkan dan umumnya ditoleransi baik; sebagian orang sensitif.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "methylchloroisothiazolinone": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "methylisothiazolinone": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "methylisothiazolinone + methylchloroisothiazolinone": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "methylparaben": {
+      "function": "Pengawet golongan paraben (rantai pendek)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai pendek masih diizinkan dan umumnya ditoleransi baik; sebagian orang sensitif.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "methylpropanediol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "mineral oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "mixed tocopherols": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "myristic acid": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "myristyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "myristyl myristate": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "n-butylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "natural fragrance": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "natural lactic acid": {
+      "function": "AHA eksfolian (lactic)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Eksfolian AHA yang lebih lembut dari glycolic, namun tetap dapat memicu perih pada kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "niacinamide": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "olea europaea (olive) fruit oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "oleic acid": {
+      "function": "Emolien komedogenik (ester/lemak)",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Bahan ini punya rating komedogenik tinggi dan berpotensi menyumbat pori pada kulit berminyak.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "organic alcohol denat": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "organic ethanol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "oxybenzone": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "oxybenzone 2%": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "oxybenzone 3%": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "oxybenzone 4%": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "oxybenzone 5%": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "oxybenzone 6%": {
+      "function": "Filter UV kimia",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Filter UV kimia ini dapat memicu reaksi fotoalergi dan iritasi pada kulit sensitif.",
+      "source": "SCCS Opinion on Benzophenone-3 (2022); EU Reg. 1223/2009 Annex VI"
+    },
+    "palmitic acid": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "panthenol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "parfum": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "peg-100 stearate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "peg-40 hydrogenated castor oil": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "peg-60 hydrogenated castor oil": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "pelargonium graveolens (geranium) flower oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "pelargonium graveolens (geranium) oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "pentaerythrityl tetra-di-t-butyl hydroxyhydrocinnamate": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "pentylene glycol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "peppermint essential oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "peppermint oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "perfume": {
+      "function": "Pewangi (fragrance)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Parfum dan pewangi sintetis adalah pemicu alergi kontak tersering pada kosmetik.",
+      "source": "EU Regulation 1223/2009 Annex III; SCCS Opinion on Fragrance Allergens (2012)"
+    },
+    "persea gratissima (avocado) oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "petrolatum": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "phenoxyethanol": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "phenoxyethanol sa": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "phytic acid": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "phytosphingosine": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "polysorbate 20": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "polysorbate 60": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "polysorbate 80": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "potassium hydroxide": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "potassium sorbate": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "potassium sorbate nf": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "propanediol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "propylene glycol": {
+      "function": "Humektan / pelarut",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Umumnya aman, namun dapat memicu iritasi kontak pada kulit sensitif atau terluka.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "propylene glycol dicaprate": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "propylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "prunus amygdalus dulcis (sweet almond) oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "quaternium-15": {
+      "function": "Pengawet pemicu alergi",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Pengawet golongan ini dikenal sebagai allergen kontak kuat dan dapat memicu dermatitis pada semua tipe kulit.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "retinal": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "retinol": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "retinol palmitate": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "retinols": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "retinyl palmitate": {
+      "function": "Retinoid (bahan aktif anti-aging)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Retinoid mempercepat turnover sel dan sering memicu kemerahan, perih, serta pengelupasan di awal pemakaian.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "ricinus communis (castor) seed oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "rosa damascena flower oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "rosmarinus officinalis (rosemary) leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "rosmarinus officinalis leaf oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "saccharide isomerate": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "salicylic acid": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "salicylic acid 0.5%": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "salicylic acid 1.50%": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "salicylic acid 2%": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "salicylic acid 2.0%": {
+      "function": "BHA eksfolian (salicylic acid)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "BHA larut minyak dan efektif untuk pori tersumbat, namun dapat mengeringkan dan mengiritasi kulit sensitif.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "sclerotium gum": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sd alcohol": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 30": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 36": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 38-b": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 38b": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 39": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 40-a": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 40-b": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "sd alcohol 40b": {
+      "function": "Alkohol pengering (denatured alcohol)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Alkohol rantai pendek menguap cepat, mengikis lemak pelindung kulit, dan memperparah kekeringan serta iritasi.",
+      "source": "INCIDecoder; Paula's Choice: Sensitizing Ingredients"
+    },
+    "serine": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "shea butter": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "silica": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "simmondsia chinensis (jojoba) seed oil": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "simmondsia chinensis seed oil": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium ascorbyl phosphate": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "sodium benzoate": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium benzoate nf": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium c14-16 olefin sulfonate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "sodium chloride": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium citrate": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium dehydroacetate": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium ethylparaben": {
+      "function": "Pengawet golongan paraben (rantai pendek)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai pendek masih diizinkan dan umumnya ditoleransi baik; sebagian orang sensitif.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium gluconate": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium hyaluronate": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium hyaluronate crosspolymer": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium hydroxide": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium laureth sulfate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "sodium lauryl sulfate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "sodium lauryl sulfate nf": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "sodium lauryl sulfates": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "sodium methylparaben": {
+      "function": "Pengawet golongan paraben (rantai pendek)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai pendek masih diizinkan dan umumnya ditoleransi baik; sebagian orang sensitif.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium pca": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium phytate": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sodium propylparaben": {
+      "function": "Pengawet golongan paraben (rantai panjang)",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Paraben rantai panjang dibatasi lebih ketat di EU karena potensi gangguan endokrin dan sensitasi.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sodium stearoyl glutamate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sorbic acid": {
+      "function": "Pengawet ringan",
+      "risk_skin_types": [],
+      "risk_note": "",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "sorbitan oleate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sorbitan olivate": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sorbitan stearate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sorbitol": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "squalane": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "stearic acid": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "stearyl alcohol": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "sucrose stearate": {
+      "function": "Emulgator / penstabil formula",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga campuran minyak dan air tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tea tree oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "tea-lauryl sulfate": {
+      "function": "Surfaktan keras (cleansing agent)",
+      "risk_skin_types": [
+        "Kering",
+        "Sensitif"
+      ],
+      "risk_note": "Surfaktan anionik kuat mengangkat minyak alami berlebihan dan merusak barrier kulit.",
+      "source": "Paula's Choice; INCIDecoder; CosDNA"
+    },
+    "tetrahexyldecyl ascorbate": {
+      "function": "Vitamin C / antioksidan",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Vitamin C murni bersifat asam dan dapat memicu perih; turunannya lebih lembut tetapi tetap perlu uji toleransi.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "tetrasodium edta": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tetrasodium etidronate": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tetrasodium glutamate diacetate": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "theobroma cacao (cocoa) butter": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "theobroma cacao (cocoa) seed butter": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "titanium dioxide": {
+      "function": "Filter UV fisik",
+      "risk_skin_types": [],
+      "risk_note": "Filter UV mineral yang bekerja di permukaan kulit dan jarang memicu iritasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tocopherol": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tocopherol acetate": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "tocopheryl acetate": {
+      "function": "Antioksidan",
+      "risk_skin_types": [],
+      "risk_note": "Menangkal radikal bebas dan mendukung stabilitas formula.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "trehalose": {
+      "function": "Pelembap / penenang kulit (soothing)",
+      "risk_skin_types": [],
+      "risk_note": "Bahan ini umumnya aman dan berfungsi melembapkan atau menenangkan kulit.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "triclosan": {
+      "function": "Antibakteri / pengawet",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Penggunaannya dibatasi ketat (maks. 0,3%) dan menjadi perhatian karena risiko resistensi serta gangguan endokrin.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "triclosan 0.15%": {
+      "function": "Antibakteri / pengawet",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Penggunaannya dibatasi ketat (maks. 0,3%) dan menjadi perhatian karena risiko resistensi serta gangguan endokrin.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "triclosan 0.3%": {
+      "function": "Antibakteri / pengawet",
+      "risk_skin_types": [
+        "ALL"
+      ],
+      "risk_note": "Penggunaannya dibatasi ketat (maks. 0,3%) dan menjadi perhatian karena risiko resistensi serta gangguan endokrin.",
+      "source": "EU Reg. 1223/2009 Annex V; SCCS; ASEAN Cosmetic Directive Annex VI"
+    },
+    "triethanolamine": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "trisodium ethylenediamine disuccinate": {
+      "function": "Chelating agent / penstabil",
+      "risk_skin_types": [],
+      "risk_note": "Mengikat ion logam agar formula tetap stabil.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "triticum vulgare (wheat) germ oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "triticum vulgare germ oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "tromethamine": {
+      "function": "Pengatur pH",
+      "risk_skin_types": [],
+      "risk_note": "Menjaga pH produk; aman pada konsentrasi pemakaian normal.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "urea": {
+      "function": "Humektan & keratolitik",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Pada konsentrasi tinggi bersifat keratolitik dan dapat menimbulkan perih pada kulit sensitif atau luka.",
+      "source": "INCIDecoder; Paula's Choice; SCCS"
+    },
+    "vitis vinifera (grape) seed oil": {
+      "function": "Emolien / pelunak kulit",
+      "risk_skin_types": [],
+      "risk_note": "Melapisi permukaan kulit dan menjaga kelembutan tanpa risiko iritasi berarti.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "water\\aqua\\eau": {
+      "function": "Pelarut (solvent)",
+      "risk_skin_types": [],
+      "risk_note": "Berfungsi sebagai pelarut dan pembawa bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "wheat germ oil": {
+      "function": "Minyak nabati komedogenik",
+      "risk_skin_types": [
+        "Berminyak"
+      ],
+      "risk_note": "Minyak ini punya rating komedogenik 4-5 dan sering memicu komedo pada kulit berminyak atau berjerawat.",
+      "source": "CosDNA; Fulton comedogenic scale; INCIDecoder"
+    },
+    "witch hazel": {
+      "function": "Ekstrak botanikal iritatif",
+      "risk_skin_types": [
+        "Sensitif"
+      ],
+      "risk_note": "Ekstrak tanaman ini mengandung senyawa iritatif atau astringen kuat.",
+      "source": "Paula's Choice; INCIDecoder"
+    },
+    "xanthan gum": {
+      "function": "Pengatur kekentalan (viscosity)",
+      "risk_skin_types": [],
+      "risk_note": "Membentuk tekstur gel atau krim; tidak diserap sebagai bahan aktif.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "xylitol": {
+      "function": "Humektan / pelembap (humectant)",
+      "risk_skin_types": [],
+      "risk_note": "Menarik dan mengikat air di kulit sehingga mendukung hidrasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    },
+    "ylang ylang essential oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "ylang ylang flower oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "ylang ylang oil": {
+      "function": "Minyak atsiri (essential oil)",
+      "risk_skin_types": [
+        "Berminyak",
+        "Sensitif"
+      ],
+      "risk_note": "Minyak atsiri mengandung senyawa pewangi yang mudah teroksidasi dan memicu iritasi atau alergi kontak.",
+      "source": "Paula's Choice: Essential Oils for Skin; INCIDecoder; EU Reg. 1223/2009 Annex III"
+    },
+    "zinc oxide": {
+      "function": "Filter UV fisik",
+      "risk_skin_types": [],
+      "risk_note": "Filter UV mineral yang bekerja di permukaan kulit dan jarang memicu iritasi.",
+      "source": "INCIDecoder; CosDNA; Paula's Choice"
+    }
+  }
+}

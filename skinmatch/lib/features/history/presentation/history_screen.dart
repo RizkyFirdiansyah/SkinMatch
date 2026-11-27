@@ -4,90 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/network/api_client.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../shared/models/skinmatch_models.dart';
 import '../../../shared/widgets/shared_widgets.dart';
 import '../widgets/history_list_item.dart';
 
-// ── Mock Data ─────────────────────────────────────────────────────────────────
-final historyProvider = Provider<List<ProductHistoryItem>>((ref) {
-  return _mockHistory;
-});
-
-const _mockHistory = [
-  ProductHistoryItem(
-    historyId: 'h001',
-    aiFeedbackApplied: true,
-    trialStatus: TrialStatus.completedSuccess,
-    scanResult: ScanAnalysisResult(
-      scanId: 's001',
-      userId: 'user-001',
-      timestamp: '5 hari lalu',
-      brand: 'DERMACARE LAB',
-      productName: 'Cera-Repair Moisturizer',
-      matchScore: 94,
-      safetyStatus: SafetyStatus.lowRisk,
-      allergyPotential: AllergyPotential.veryLow,
-      comedogenicScale: '0-1',
-      formulaPh: '5.8 (Ideal)',
-      routineRecommendation: 'Sangat cocok untuk kulit kombinasi sensitif.',
-      ingredients: [],
-    ),
-    review: ProductReview(
-      rating: 5.0,
-      userNotes: 'Kulit terasa lebih lembap dan tidak ada iritasi sama sekali!',
-      confirmedMatch: true,
-      reviewedAt: '5 hari lalu',
-    ),
-  ),
-  ProductHistoryItem(
-    historyId: 'h002',
-    aiFeedbackApplied: true,
-    trialStatus: TrialStatus.triggeredBreakout,
-    scanResult: ScanAnalysisResult(
-      scanId: 's002',
-      userId: 'user-001',
-      timestamp: '12 hari lalu',
-      brand: 'CLEARGLOW',
-      productName: 'Deep Pore Cleanser',
-      matchScore: 42,
-      safetyStatus: SafetyStatus.highRisk,
-      allergyPotential: AllergyPotential.high,
-      comedogenicScale: '2-3',
-      formulaPh: '7.2 (Basa)',
-      routineRecommendation: 'Tidak disarankan untuk kulit sensitif.',
-      ingredients: [],
-    ),
-    review: ProductReview(
-      rating: 1.5,
-      userNotes: 'Memicu kemerahan dan jerawat baru setelah 2 hari.',
-      confirmedMatch: false,
-      reviewedAt: '10 hari lalu',
-    ),
-  ),
-  ProductHistoryItem(
-    historyId: 'h003',
-    aiFeedbackApplied: false,
-    trialStatus: TrialStatus.unreviewed,
-    scanResult: ScanAnalysisResult(
-      scanId: 's003',
-      userId: 'user-001',
-      timestamp: '2 hari lalu',
-      brand: 'SUNSHIELD BIO',
-      productName: 'Mineral Sunscreen SPF50',
-      matchScore: 91,
-      safetyStatus: SafetyStatus.lowRisk,
-      allergyPotential: AllergyPotential.low,
-      comedogenicScale: '0',
-      formulaPh: '6.0 (Ideal)',
-      routineRecommendation: 'Formula mineral aman untuk kulit sensitif.',
-      ingredients: [],
-    ),
-  ),
-];
-
 // ── History Filter ─────────────────────────────────────────────────────────────
-enum HistoryFilter { all, tried, match, breakout }
+enum HistoryFilter { all, match, notMatch }
 
 final historyFilterProvider = StateProvider<HistoryFilter>((ref) => HistoryFilter.all);
 
@@ -127,14 +51,11 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     }).toList();
 
     return switch (filter) {
-      HistoryFilter.tried => filtered
-          .where((i) => i.trialStatus != TrialStatus.unreviewed)
-          .toList(),
       HistoryFilter.match => filtered
           .where((i) => i.scanResult.matchScore >= 80)
           .toList(),
-      HistoryFilter.breakout => filtered
-          .where((i) => i.trialStatus == TrialStatus.triggeredBreakout)
+      HistoryFilter.notMatch => filtered
+          .where((i) => i.scanResult.matchScore < 80)
           .toList(),
       HistoryFilter.all => filtered,
     };
@@ -142,7 +63,46 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final allItems = ref.watch(historyProvider);
+    final history = ref.watch(scanHistoryProvider);
+    return history.when(
+      data: (items) => _buildHistory(context, items),
+      loading: () => const Scaffold(
+        backgroundColor: AppColors.backgroundSoft,
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, _) => Scaffold(
+        backgroundColor: AppColors.backgroundSoft,
+        appBar: SkinMatchAppBar(title: 'Riwayat Pindai'),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  error.toString(),
+                  textAlign: TextAlign.center,
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => ref.invalidate(scanHistoryProvider),
+                  child: const Text('Coba Lagi'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHistory(
+    BuildContext context,
+    List<ProductHistoryItem> allItems,
+  ) {
     final filter = ref.watch(historyFilterProvider);
     final items =
         _filterItems(allItems, filter, _searchController.text);
@@ -213,13 +173,6 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             .state = HistoryFilter.all,
                       ),
                       _FilterChip(
-                        label: 'Sudah Dicoba',
-                        isSelected: filter == HistoryFilter.tried,
-                        onTap: () => ref
-                            .read(historyFilterProvider.notifier)
-                            .state = HistoryFilter.tried,
-                      ),
-                      _FilterChip(
                         label: 'Sangat Cocok',
                         isSelected: filter == HistoryFilter.match,
                         onTap: () => ref
@@ -227,12 +180,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                             .state = HistoryFilter.match,
                       ),
                       _FilterChip(
-                        label: 'Memicu Breakout',
-                        isSelected: filter == HistoryFilter.breakout,
+                        label: 'Perlu Perhatian',
+                        isSelected: filter == HistoryFilter.notMatch,
                         variant: _ChipVariant.danger,
                         onTap: () => ref
                             .read(historyFilterProvider.notifier)
-                            .state = HistoryFilter.breakout,
+                            .state = HistoryFilter.notMatch,
                       ),
                     ],
                   ),
@@ -279,14 +232,20 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                         onTap: () => context.push(
                           AppRoutes.analysisPath(items[i].scanResult.scanId),
                         ),
-                        onMarkGood: () {},
-                        onMarkBad: () {},
+                        onMarkGood: () => _showReviewNotAvailable(context),
+                        onMarkBad: () => _showReviewNotAvailable(context),
                       ),
                     ),
                   ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showReviewNotAvailable(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Fitur ulasan belum tersedia di server.')),
     );
   }
 }
@@ -409,7 +368,7 @@ class _VerticalDivider extends StatelessWidget {
       width: 1,
       height: 48,
       // Gunakan withOpacity pengganti withValues
-      color: Colors.white.withOpacity(0.15),
+      color: Colors.white.withValues(alpha: 0.15),
     );
   }
 }

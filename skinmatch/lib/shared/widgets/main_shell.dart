@@ -6,19 +6,14 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/routing/app_router.dart';
 
-/// Shell wrapper yang menyediakan Bottom Navigation Bar
-/// untuk layar-layar utama: Scanner & History
+/// Shell wrapper yang menyediakan navigasi utama Beranda, Pindai, dan Profil.
 class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.child});
 
   final Widget child;
 
   static const _tabs = [
-    _NavItem(
-      label: 'Riwayat',
-      icon: LucideIcons.clock,
-      route: AppRoutes.history,
-    ),
+    _NavItem(label: 'Beranda', icon: LucideIcons.house, route: AppRoutes.home),
     _NavItem(
       label: 'Pindai',
       icon: LucideIcons.scan_line,
@@ -29,7 +24,10 @@ class MainShell extends StatelessWidget {
 
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith(AppRoutes.history)) return 0;
+    if (location.startsWith(AppRoutes.home) ||
+        location.startsWith(AppRoutes.history)) {
+      return 0;
+    }
     if (location.startsWith(AppRoutes.profile)) return 2;
     return 1; // default: scan
   }

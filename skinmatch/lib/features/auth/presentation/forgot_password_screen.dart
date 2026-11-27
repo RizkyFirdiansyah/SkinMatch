@@ -20,9 +20,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
 
-  bool _isLoading = false;
-  bool _sent = false; // false = tampil form, true = tampil "berhasil terkirim"
-
   @override
   void dispose() {
     _idController.dispose();
@@ -38,17 +35,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
   }
 
-  Future<void> _submit() async {
+  void _submit() {
     if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-    // Nanti: ganti dengan panggilan API "lupa kata sandi" ke server.
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _sent = true;
-    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Fitur reset kata sandi belum tersedia di server.'),
+      ),
+    );
   }
 
   @override
@@ -84,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: FadeSlideIn(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 350),
-                    child: _sent ? _buildSuccess() : _buildForm(),
+                    child: _buildForm(),
                   ),
                 ),
               ),
@@ -127,7 +120,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         const SizedBox(height: 8),
         const Text(
-          'Tenang, itu hal biasa. Masukkan email atau No. Handphone yang terdaftar, dan kami kirimkan tautan untuk mengatur ulang kata sandi Anda.',
+          'Masukkan email yang terdaftar untuk mengatur ulang kata sandi Anda.',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 12,
@@ -139,19 +132,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         Form(
           key: _formKey,
           child: AuthTextField(
-            label: 'Email / No. Handphone *',
-            hint: 'nama@email.com atau 08123456789',
+            label: 'Email *',
+            hint: 'nama@email.com',
             icon: Icons.mail_outline,
             controller: _idController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.done,
-            validator: Validators.emailOrPhone,
+            validator: Validators.email,
           ),
         ),
         const SizedBox(height: 20),
         AuthPrimaryButton(
           text: 'Kirim Tautan Reset',
-          isLoading: _isLoading,
           onPressed: _submit,
         ),
         const SizedBox(height: 12),
@@ -170,49 +162,4 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildSuccess() {
-    return Column(
-      key: const ValueKey('success'),
-      children: [
-        // Ikon centang yang "membal" saat muncul
-        TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0.5, end: 1),
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.elasticOut,
-          builder: (context, scale, child) =>
-              Transform.scale(scale: scale, child: child),
-          child: _iconCircle(Icons.mark_email_read_outlined),
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          'Tautan Terkirim!',
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Silakan cek ${_idController.text.trim()} dan ikuti petunjuk di dalamnya untuk membuat kata sandi baru.',
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 12,
-            height: 1.5,
-            color: AuthColors.textGrey,
-          ),
-        ),
-        const SizedBox(height: 24),
-        AuthPrimaryButton(text: 'Kembali ke Masuk', onPressed: _back),
-        const SizedBox(height: 12),
-        TextButton(
-          onPressed: () => setState(() => _sent = false),
-          child: const Text(
-            'Belum menerima? Kirim ulang',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: AuthColors.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
