@@ -9,6 +9,7 @@ class Scan(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=True)
+    product_name = Column(String(150), nullable=True)  # nama bebas dari user, boleh sama
     image_path = Column(String(255), nullable=False)
     
     # OCR results
