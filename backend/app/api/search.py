@@ -60,7 +60,7 @@ def search_products(
             "category_slug": p.category.slug,
             "image_url": p.image_url,
             "bpom_number": p.bpom_number,
-            "price": float(p.price) if p.price else None
+            "price": float(p.price) if p.price else None,
         })
     
     return {

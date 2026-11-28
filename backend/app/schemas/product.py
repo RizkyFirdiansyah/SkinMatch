@@ -37,5 +37,5 @@ class ProductListItem(BaseModel):
     bpom_number: Optional[str] = None
     price: Optional[float] = None
     
-    class Config:
+    class Config
         from_attributes = True

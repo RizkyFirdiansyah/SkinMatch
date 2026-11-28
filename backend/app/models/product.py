@@ -15,7 +15,7 @@ class Product(Base):
     ingredients_text = Column(Text, nullable=False)  # Comma-separated ingredients
     image_url = Column(String(500), nullable=True)
     bpom_number = Column(String(50), nullable=True, index=True)  # Nomor registrasi BPOM
-    price = Column(Numeric(10, 2), nullable=True)  # Harga (opsional)
+    price = Column(Numeric(10, 2), nullable=True)  # Harga (opsional, boleh kosong)
     created_at = Column(DateTime, default=func.now())
     
     # Relationships
